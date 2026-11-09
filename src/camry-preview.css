@@ -1,0 +1,59 @@
+.camry-preview {
+  min-height: 100vh;
+  color: #e8edf4;
+  background: #111820;
+  font-family: 'DM Sans', Arial, sans-serif;
+}
+.camry-preview * { box-sizing: border-box; }
+.camry-preview button, .camry-preview select { font: inherit; }
+.camry-preview button:focus-visible, .camry-preview select:focus-visible, .camry-preview a:focus-visible { outline: 2px solid #f6ae7e; outline-offset: 2px; }
+.camry-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 15px 22px; border-bottom: 1px solid #34414d; }
+.camry-header small { color: #eba67b; font-size: 10px; letter-spacing: .15em; font-weight: 700; }
+.camry-header h1 { margin: 4px 0 0; font-size: clamp(16px, 2vw, 23px); }
+.camry-header a, .camry-credit a { color: #f4ba92; }
+.camry-header a { font-size: 12px; white-space: nowrap; }
+.camry-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 385px); min-height: calc(100vh - 72px); }
+.camry-viewer { padding: 18px; min-width: 0; display: flex; flex-direction: column; }
+.camry-stage { min-width: 0; width: 100%; height: clamp(440px, calc(100dvh - 195px), 850px); position: relative; border: 1px solid #40505d; background: #202932; }
+.camry-stage canvas { display: block; touch-action: none; }
+.camry-overlay { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; background: #101820d9; color: #fff; z-index: 2; }
+.camry-webgl-fallback { z-index: 3; }
+.camry-overlay div { max-width: 430px; }
+.camry-overlay p { line-height: 1.5; overflow-wrap: anywhere; }
+.camry-overlay button { border: 1px solid #e5a67d; background: #d58d61; color: #131b22; padding: 8px 18px; font-weight: 700; }
+.camry-camera-bar { display: flex; gap: 5px; flex-wrap: wrap; padding-top: 10px; }
+.camry-camera-bar button { flex: 1 1 80px; min-height: 36px; border: 1px solid #445463; background: #263440; color: #edf3f8; text-transform: capitalize; }
+.camry-camera-bar button:hover, .camry-camera-bar button[aria-pressed="true"] { background: #d99870; border-color: #d99870; color: #141a20; }
+.camry-hint { margin: 10px 0 0; color: #a4b4c2; font-size: 11px; line-height: 1.5; }
+.camry-panel { min-width: 0; padding: 0 18px 24px; border-left: 1px solid #33404d; overflow-y: auto; }
+.camry-panel section { padding: 17px 0; border-bottom: 1px solid #33404d; }
+.camry-panel h2 { font-size: 15px; margin: 0 0 11px; }
+.camry-panel label { display: block; color: #b6c4d0; font-size: 11px; margin-bottom: 6px; }
+.camry-panel select { display: block; width: 100%; min-width: 0; height: 37px; padding: 0 8px; color: #f2f5f8; background: #253340; border: 1px solid #596c7d; }
+.camry-material-modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.camry-material-modes button { min-height: 38px; min-width: 0; border: 1px solid #596c7d; background: #253340; color: #e7edf2; }
+.camry-material-modes button:hover, .camry-material-modes button[aria-pressed="true"] { background: #d99870; border-color: #d99870; color: #141a20; }
+.camry-panel p { color: #a8b8c5; font-size: 11px; line-height: 1.5; margin: 9px 0 0; }
+.camry-metrics { margin: 0; }
+.camry-metrics div { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid #2b3945; padding: 7px 0; font-size: 11px; }
+.camry-metrics dt { color: #aebdca; }
+.camry-metrics dd { margin: 0; text-align: right; overflow-wrap: anywhere; max-width: 58%; }
+.camry-table-wrap { overflow-x: auto; }
+.camry-panel table { width: 100%; border-collapse: collapse; font-size: 10px; white-space: nowrap; }
+.camry-panel th, .camry-panel td { padding: 7px 5px; text-align: right; border-bottom: 1px solid #33404d; }
+.camry-panel th:first-child { text-align: left; }
+.camry-panel tr[aria-current="true"] { color: #f4b28b; }
+.camry-credit { padding: 17px 0; color: #aab9c5; font-size: 10px; line-height: 1.5; }
+@media (max-width: 940px) {
+  .camry-layout { grid-template-columns: minmax(0, 1fr); }
+  .camry-stage { height: min(62vh, 640px); min-height: 360px; }
+  .camry-panel { border-left: 0; border-top: 1px solid #33404d; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+  .camry-credit { grid-column: 1 / -1; }
+}
+@media (max-width: 620px) {
+  .camry-header { padding: 12px; align-items: flex-start; flex-direction: column; }
+  .camry-viewer { padding: 10px; }
+  .camry-stage { height: 48vh; min-height: 310px; }
+  .camry-panel { display: block; padding: 0 13px 20px; }
+  .camry-camera-bar button { flex-basis: 72px; }
+}

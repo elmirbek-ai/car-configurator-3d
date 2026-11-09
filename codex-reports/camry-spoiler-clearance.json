@@ -1,0 +1,63 @@
+{
+  "mount": {
+    "leftContact": [
+      -0.42795,
+      1.07918119430542,
+      -2.14259
+    ],
+    "rightContact": [
+      0.42822,
+      1.0791810750961304,
+      -2.14259
+    ],
+    "wingSpanSourceUnits": 1.45,
+    "wingLiftSourceUnits": 0.25,
+    "rearOffsetSourceUnits": -0.08,
+    "supportBaseRiseSourceUnits": 0.04,
+    "footLiftSourceUnits": 0.008
+  },
+  "intersections": [
+    {
+      "piece": "candidate-wing-0",
+      "triangles": 284,
+      "trunkTriangleIntersections": 0,
+      "otherGeometryIntersections": {}
+    },
+    {
+      "piece": "candidate-support-1",
+      "triangles": 28,
+      "trunkTriangleIntersections": 0,
+      "otherGeometryIntersections": {}
+    },
+    {
+      "piece": "candidate-foot-2",
+      "triangles": 120,
+      "trunkTriangleIntersections": 46,
+      "otherGeometryIntersections": {}
+    },
+    {
+      "piece": "candidate-support-3",
+      "triangles": 28,
+      "trunkTriangleIntersections": 0,
+      "otherGeometryIntersections": {}
+    },
+    {
+      "piece": "candidate-foot-4",
+      "triangles": 120,
+      "trunkTriangleIntersections": 46,
+      "otherGeometryIntersections": {}
+    },
+    {
+      "piece": "candidate-endplate-5",
+      "triangles": 100,
+      "trunkTriangleIntersections": 0,
+      "otherGeometryIntersections": {}
+    },
+    {
+      "piece": "candidate-endplate-6",
+      "triangles": 100,
+      "trunkTriangleIntersections": 0,
+      "otherGeometryIntersections": {}
+    }
+  ]
+}

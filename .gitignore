@@ -1,0 +1,32 @@
+﻿node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+.idea/
+.vscode/
+*.tsbuildinfo
+
+# Experimental 3D models
+public/models/CarConcept_Blender_Inspection.glb
+public/models/candidates/ToyotaCamry2018_Optimized_Prototype.glb
+public/models/candidates/ToyotaCamry2018_WheelOptimized_v1.glb
+public/models/candidates/toyota_camry_2018.glb
+
+# Generated Blender files
+*.blend1
+__pycache__/
+
+# Local development reports and backups
+codex-reports/history/
+codex-reports/visuals/
+src-backup/
+
+
+# Local development reports and backups
+codex-reports/history/
+codex-reports/visuals/
+src-backup/
+
