@@ -72,3 +72,7 @@ npm run preview
 The model credits, source links, license terms and changes are recorded in [ATTRIBUTION.md](ATTRIBUTION.md). The current working tree is a release candidate under audit; documentation here does not imply that publication has been approved.
 
 This is an independent, unofficial 3D configurator created for demonstration and educational purposes. It is not affiliated with, sponsored by, or endorsed by BMW or Toyota. All trademarks belong to their respective owners.
+
+## Development
+
+Contributions are welcome. Please create a feature branch, make your changes, and open a pull request for review.
