@@ -9,6 +9,7 @@ import { getVehicleById } from '../vehicleRegistry'
 import WheelRims from './WheelRims'
 import { VehiclePlates, VehicleSpoiler } from './VehicleAttachments'
 import { applyBodyFinish, applyRimFinish, applyWindowTint } from '../vehicleTuning'
+import { resolvedWheelDesign } from '../wheelDesigns'
 
 const MODEL_URL = '/models/CarConcept.glb'
 const conceptAnchors = getVehicleById('concept-gt')?.attachmentAnchors
@@ -271,7 +272,7 @@ function CarModel({ config, onReady }: { config: CarConfiguration; onReady: (rea
   return (
     <group>
       <primitive object={cloned} />
-      <WheelRims root={cloned} design={config.wheelDesign} finish={config.wheelFinish} />
+      <WheelRims root={cloned} design={resolvedWheelDesign('concept-gt', config.wheelDesign)} finish={config.wheelFinish} />
       <VehiclePlates text={config.plate} front={conceptAnchors?.frontPlate ?? null} rear={conceptAnchors?.rearPlate ?? null} />
       {config.spoiler && conceptAnchors?.spoilerMounts && <VehicleSpoiler mount={conceptAnchors.spoilerMounts} />}
     </group>

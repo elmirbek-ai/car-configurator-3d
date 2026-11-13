@@ -7,6 +7,8 @@ dist/
 .DS_Store
 .idea/
 .vscode/
+.chrome-release-qa/
+release-snapshots/
 *.tsbuildinfo
 
 # Experimental 3D models
@@ -14,6 +16,9 @@ public/models/CarConcept_Blender_Inspection.glb
 public/models/candidates/ToyotaCamry2018_Optimized_Prototype.glb
 public/models/candidates/ToyotaCamry2018_WheelOptimized_v1.glb
 public/models/candidates/toyota_camry_2018.glb
+public/models/candidates/ToyotaCamry2018_WebCandidate_v3.glb
+public/models/candidates/bmw_m5_cs_f90.glb
+public/models/candidates/bmw-m5-f90/bmw_m5_f90_plate_ready.glb
 
 # Generated Blender files
 *.blend1

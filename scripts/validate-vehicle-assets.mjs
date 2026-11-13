@@ -1,9 +1,11 @@
-import { readFileSync, statSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { createHash } from 'node:crypto'
 import { loadProjectModule } from './vehicle-test-loader.mjs'
 
 const { listVehicles } = loadProjectModule('src/vehicleRegistry.ts')
+const { BMW_ORIGINAL_RIM_MESHES, BMW_WHEEL_FITMENTS } = loadProjectModule('src/bmwWheelFitment.ts')
 const componentSizes = { 5120: 1, 5121: 1, 5122: 2, 5123: 2, 5125: 4, 5126: 4 }
 const accessorSizes = { SCALAR: 1, VEC2: 2, VEC3: 3, VEC4: 4, MAT2: 4, MAT3: 9, MAT4: 16 }
 
@@ -86,17 +88,51 @@ export function validateGlb(vehicle) {
   }, 0)
   if (vehicle.performance.triangles !== null && triangles !== vehicle.performance.triangles) warnings.push(`registry triangle count ${vehicle.performance.triangles} differs from GLB ${triangles}`)
   if (vehicle.performance.downloadBytes !== null && file.length !== vehicle.performance.downloadBytes) warnings.push(`registry file size ${vehicle.performance.downloadBytes} differs from GLB ${file.length}`)
-  if (vehicle.id === 'toyota-camry-2018' && (file.length > 15 * 1024 * 1024 || triangles > 250000)) warnings.push('exceeds proposed desktop transfer or triangle budget')
+  if (vehicle.id !== 'concept-gt' && (file.length > 15 * 1024 * 1024 || triangles > 250000)) warnings.push('exceeds proposed desktop transfer or triangle budget')
   const requiredRoles = { bodyPaint: 'paintedMeshes', bodyFinish: 'paintedMeshes', windowTint: 'windowGlass', wheelFinish: 'rimMeshes', carbonHood: 'hoodSurface', frontBumper: 'frontBumperPaint', rearBumper: 'rearBumperPaint' }
   for (const [feature, role] of Object.entries(requiredRoles)) {
     if (vehicle.features[feature] && vehicle.id !== 'concept-gt' && !mappings.some((mapping) => mapping.role === role && mapping.valid)) errors.push(`feature ${feature} lacks valid ${role} mapping`)
   }
-  if (vehicle.id !== 'concept-gt' && vehicle.features.wheelFinish && mappings.filter((mapping) => mapping.role === 'rimMeshes' && mapping.valid).length !== 4) errors.push('wheelFinish requires four verified rim meshes')
+  if (vehicle.id !== 'concept-gt' && vehicle.features.wheelFinish) {
+    const rimCount = mappings.filter((mapping) => mapping.role === 'rimMeshes' && mapping.valid).length
+    if (rimCount === 0 || (vehicle.wheelReplacement.status === 'verified' && rimCount !== 4)) {
+      errors.push('wheelFinish requires verified rim bindings; wheel replacement requires four separate rims')
+    }
+  }
   if (vehicle.features.frontPlate && !vehicle.attachmentAnchors.frontPlate) errors.push('frontPlate requires a verified front attachment')
   if (vehicle.features.rearPlate && !vehicle.attachmentAnchors.rearPlate) errors.push('rearPlate requires a verified rear attachment')
   if (vehicle.features.spoiler && !vehicle.attachmentAnchors.spoilerMounts) errors.push('spoiler requires verified mounting contacts')
-  if (vehicle.features.wheelDesign && vehicle.wheelReplacement.status !== 'verified' && vehicle.wheelReplacement.status !== 'legacy-adapter') {
+  if (vehicle.features.wheelDesign && !['verified', 'verified-combined', 'legacy-adapter'].includes(vehicle.wheelReplacement.status)) {
     errors.push('wheelDesign requires verified fitment and cover clearance')
+  }
+  if (vehicle.wheelReplacement.status === 'verified-combined') {
+    if (vehicle.id !== 'bmw-m5-f90' || vehicle.wheelReplacement.evidence !== 'stage-7-2-bmw-fitment') {
+      errors.push('combined wheel fitment has no supported audit')
+    } else {
+      const audit = JSON.parse(readFileSync('tests/fixtures/stage-7-2-bmw-fitment.json', 'utf8'))
+      const actualHash = createHash('sha256').update(file).digest('hex')
+      if (audit.assetSha256 !== actualHash || BMW_WHEEL_FITMENTS.length !== 4) errors.push('BMW wheel fitment audit is stale')
+      for (const { leaf, material } of BMW_ORIGINAL_RIM_MESHES) {
+        const matches = json.nodes.filter((node) => node.name === leaf && node.mesh !== undefined)
+        const names = matches.flatMap((node) => json.meshes[node.mesh].primitives.map((part) => json.materials[part.material]?.name))
+        if (matches.length !== 1 || !names.includes(material)) errors.push(`BMW original rim component changed: ${leaf}`)
+      }
+      for (const fitment of BMW_WHEEL_FITMENTS) {
+        const measured = audit.wheels[fitment.corner]
+        if (!measured || Math.abs(measured.parts.mainRim.radiusRange[1] - fitment.rimRadius) > 0.000002 ||
+            Math.abs(measured.parts.mainRim.outwardDepthRange[0] - fitment.outwardDepth[0]) > 0.000002 ||
+            Math.abs(measured.parts.mainRim.outwardDepthRange[1] - fitment.outwardDepth[1]) > 0.000002) {
+          errors.push(`BMW rim placement changed: ${fitment.corner}`)
+          continue
+        }
+        for (const design of ['doubleSpoke', 'ySpoke', 'deepConcave']) {
+          const intersections = measured.replacementProbes[design]?.selectedFit?.surfaceTriangleIntersections
+          if (!intersections || Object.values(intersections).some((count) => count !== 0)) {
+            errors.push(`BMW wheel clearance failed: ${fitment.corner} ${design}`)
+          }
+        }
+      }
+    }
   }
   if (vehicle.wheelReplacement.status === 'verified') {
     const rims = new Set(mappings.filter((mapping) => mapping.role === 'rimMeshes' && mapping.valid).map((mapping) => mapping.path))
@@ -139,6 +175,7 @@ export function validateAllVehicles() { return listVehicles().map(validateGlb) }
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const results = validateAllVehicles()
   const report = { schemaVersion: 1, generatedAt: new Date().toISOString(), vehicles: results }
+  mkdirSync('codex-reports', { recursive: true })
   writeFileSync('codex-reports/asset-validation.json', JSON.stringify(report, null, 2) + '\n')
   console.log(JSON.stringify(results.map(({ vehicleId, bytes, triangles, errors, warnings }) => ({ vehicleId, bytes, triangles, errors, warnings })), null, 2))
   if (results.some((result) => result.errors.length)) process.exitCode = 1

@@ -30,6 +30,7 @@ const defaults: Readonly<Record<VehicleId, CarConfiguration>> = {
   [DEFAULT_VEHICLE_ID]: DEFAULT_CONFIG,
   // Independent Camry defaults; unsupported properties remain inert in its scene adapter.
   'toyota-camry-2018': { ...DEFAULT_CONFIG },
+  'bmw-m5-f90': { ...DEFAULT_CONFIG },
 }
 
 export function activateVehicle(session: VehicleSession, id: string): VehicleSession {

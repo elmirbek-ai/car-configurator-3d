@@ -12,7 +12,7 @@ import type {
 } from './vehicleDescriptor'
 
 export const DEFAULT_VEHICLE_ID = 'concept-gt'
-export type VehicleId = typeof DEFAULT_VEHICLE_ID | 'toyota-camry-2018'
+export type VehicleId = typeof DEFAULT_VEHICLE_ID | 'toyota-camry-2018' | 'bmw-m5-f90'
 
 type KnownMesh = {
   readonly role: string
@@ -51,13 +51,14 @@ type RegistryBase = Pick<VehicleDescriptor, 'id' | 'glbUrl' | 'features'> & {
   }
   readonly wheelReplacement:
     | { readonly status: 'unverified' | 'legacy-adapter'; readonly reason: string }
+    | { readonly status: 'verified-combined'; readonly evidence: 'stage-7-2-bmw-fitment' }
     | { readonly status: 'verified'; readonly mounts: readonly [SourceWheelReplacementMount, SourceWheelReplacementMount, SourceWheelReplacementMount, SourceWheelReplacementMount] }
 }
 
 /** A ready descriptor requires verified anchors, fitment, scale, rights, and runtime metrics. */
 type LegacyReadyVehicle = RegistryBase & { readonly availability: 'legacy-ready'; readonly id: 'concept-gt' }
 type CandidateVehicle = RegistryBase & { readonly availability: 'candidate'; readonly id: 'toyota-camry-2018' }
-type LimitedReadyVehicle = RegistryBase & { readonly availability: 'limited-ready'; readonly id: 'toyota-camry-2018' }
+type LimitedReadyVehicle = RegistryBase & { readonly availability: 'limited-ready'; readonly id: 'toyota-camry-2018' | 'bmw-m5-f90' }
 type ReadyVehicle = RegistryBase & { readonly availability: 'ready'; readonly descriptor: VehicleDescriptor }
 
 export type VehicleRegistryEntry = LegacyReadyVehicle | LimitedReadyVehicle | CandidateVehicle | ReadyVehicle
@@ -77,6 +78,13 @@ function camryMesh(path: readonly string[], material: string): MeshBinding {
 function camryBindings(paths: NonEmptyArray<readonly string[]>, material: string): NonEmptyArray<MeshBinding> {
   const [first, ...rest] = paths
   return [camryMesh(first, material), ...rest.map((path) => camryMesh(path, material))]
+}
+
+const bmwRoot = ['Sketchfab_model', 'USDRoot', 'scene', 'Meshes', 'Sketchfab_model', '_e7d93b943224cbc9cc88b06ab9d34ed_fbx', 'RootNode'] as const
+function bmwMesh(index: string, suffix: string, material: string): MeshBinding {
+  const parent = `f_bmw_f90_m5_${index}`
+  const leaf = `${parent}_${suffix}_0`
+  return { nodePath: [...bmwRoot, parent, leaf, leaf], primitiveIndices: [0], expectedMaterialNames: [material] }
 }
 
 const conceptFeatures = {
@@ -339,7 +347,67 @@ const camry: VehicleRegistryEntry = {
   },
 }
 
-const vehicles: readonly VehicleRegistryEntry[] = [concept, camry]
+const bmw: VehicleRegistryEntry = {
+  id: 'bmw-m5-f90', displayName: 'BMW M5 F90',
+  glbUrl: '/models/candidates/bmw-m5-f90/bmw_m5_f90.glb',
+  availability: 'limited-ready',
+  features: { bodyPaint: true, bodyFinish: true, windowTint: false, wheelFinish: true,
+    wheelDesign: true, carbonHood: false, frontBumper: false, rearBumper: false,
+    frontPlate: false, rearPlate: false, spoiler: false },
+  knownMeshes: [
+    { role: 'paintedMeshes', certainty: 'verified-mesh', bindings: [bmwMesh('119', 'Carpaint', 'Carpaint')] },
+    { role: 'rimMeshes', certainty: 'verified-mesh', bindings: [
+      bmwMesh('132', 'M_Rim_Secondary_Max', 'M_Rim_Main_Max'),
+      bmwMesh('133', 'M_Rim_Main_Max', 'M_Rim_Main_Max_0'),
+      bmwMesh('135', 'rimsiulver', 'M_Rim_Main_Max_0'),
+    ] },
+    { role: 'tireMeshes', certainty: 'verified-mesh', bindings: [bmwMesh('130', 'EXT_Tyre', 'EXT_Tyre')] },
+    { role: 'brakeMeshes', certainty: 'verified-mesh', bindings: [
+      bmwMesh('041', 'Brake_Caliper_001', 'Brake_Caliper_001'),
+      bmwMesh('044', 'Brake_Disk_rear_001', 'Brake_Disk_rear_001'),
+      bmwMesh('045', 'Brake_Disk_001', 'Brake_Disk_001'),
+    ] },
+  ],
+  cameraOrientation: { sourceForward: '+x', sourceUp: '+y', metersPerSourceUnit: null, evidence: 'asset-audit' },
+  attachmentAnchors: {
+    frontPlate: {
+      position: [0.030631, 0.453974, 2.447644], outwardNormal: [0, 0, 1], up: [0, 1, 0],
+      widthSourceUnits: 0.450, heightSourceUnits: 0.132,
+    },
+    rearPlate: {
+      position: [0.030631, 0.777670, -2.372028],
+      outwardNormal: [0, 0.260665834, -0.965429008],
+      up: [0, 0.965429008, 0.260665834],
+      widthSourceUnits: 0.450, heightSourceUnits: 0.132,
+    },
+    spoilerMounts: null,
+  },
+  wheelReplacement: { status: 'verified-combined', evidence: 'stage-7-2-bmw-fitment' },
+  license: {
+    sourceUrl: 'https://sketchfab.com/3d-models/bmw-m5-f90-5478e978bd634337adc8e3dc413fbfa3',
+    termsUrl: 'https://creativecommons.org/licenses/by/4.0/', licenseName: 'CC BY 4.0',
+    attributionText: 'Bmw M5 F90 by RES1N, Sketchfab, CC BY 4.0', author: 'RES1N',
+    evidence: 'glb-asset-metadata', thirdPartyRightsVerified: false,
+  },
+  performance: { downloadBytes: 39_385_104, triangles: 259_936, textureCount: 74,
+    drawCalls: null, decodedTextureBytes: null, largestTextureEdgePixels: 1024 },
+  unavailableReasons: ['Physical meter scale and spoiler contacts are unverified.', 'BMW front and rear KG plate mounts failed visual acceptance; release controls are disabled.'],
+  featureNotes: {
+    bodyPaint: 'One verified Carpaint mesh covers the painted body; independent panels are unavailable.',
+    bodyFinish: 'The same isolated Carpaint material supports finish changes.',
+    wheelFinish: 'Three verified rim-only meshes cover four wheels; tires and brakes remain separate.',
+    wheelDesign: 'Three designs use four individually measured placements; Blender tire, brake and body intersection probes passed. Browser appearance remains unverified.',
+    windowTint: 'EXt_GLASS also contains headlight glazing; whole-mesh tint would affect lights.',
+    carbonHood: 'Hood geometry is merged with the painted body.',
+    frontBumper: 'Front bumper is not an independently verified painted mesh.',
+    rearBumper: 'Rear bumper is not an independently verified painted mesh.',
+    frontPlate: 'Disabled for release: the front KG plate mount did not pass visual acceptance. Geometry and calibration remain for future work.',
+    rearPlate: 'Disabled for release: the rear KG plate mount did not pass visual acceptance. Geometry and calibration remain for future work.',
+    spoiler: 'Rear contact points and clearance are unverified.',
+  },
+}
+
+const vehicles: readonly VehicleRegistryEntry[] = [concept, camry, bmw]
 
 export function listVehicles(): readonly VehicleRegistryEntry[] {
   return vehicles

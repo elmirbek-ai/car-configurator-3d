@@ -6,15 +6,21 @@ import { resolve } from 'node:path'
 import { createRequire } from 'node:module'
 import { loadProjectModule } from './vehicle-test-loader.mjs'
 import { validateAllVehicles, validateGlb } from './validate-vehicle-assets.mjs'
+import { verifyCamryCandidate } from './verify-camry-candidate.mjs'
 
 const registry = loadProjectModule('src/vehicleRegistry.ts')
 const THREE = createRequire(import.meta.url)('three')
 const storage = loadProjectModule('src/vehicleStorage.ts')
-const { DEFAULT_CONFIG, validateStoredConfig, REGIONS, parsePlate, formatPlate } = loadProjectModule('src/types.ts')
+const { DEFAULT_CONFIG, PAINTS, validateStoredConfig, REGIONS, parsePlate, formatPlate } = loadProjectModule('src/types.ts')
 const tuning = loadProjectModule('src/vehicleTuning.ts')
 const fitment = loadProjectModule('src/vehicleWheelFitment.ts')
 const attachments = loadProjectModule('src/components/VehicleAttachments.tsx')
+const bmwMounts = loadProjectModule('src/components/BMWPlateMounts.tsx')
 const wheelSystem = loadProjectModule('src/components/VehicleWheelSystem.tsx')
+const wheelRims = loadProjectModule('src/components/WheelRims.ts')
+const wheelDesigns = loadProjectModule('src/wheelDesigns.ts')
+const wheelFinishes = loadProjectModule('src/wheelFinishes.ts')
+const bmwWheels = loadProjectModule('src/bmwWheelFitment.ts')
 const camryAssets = loadProjectModule('src/components/camryAssets.ts')
 
 function memoryStorage() {
@@ -26,10 +32,10 @@ function memoryStorage() {
   }
 }
 
-test('registry resolves two unique selectable model paths and conservative features', () => {
+test('registry resolves three unique selectable model paths and conservative features', () => {
   const vehicles = registry.listAvailableVehicles()
-  assert.deepEqual(vehicles.map((vehicle) => vehicle.id), ['concept-gt', 'toyota-camry-2018'])
-  assert.equal(new Set(vehicles.map((vehicle) => vehicle.glbUrl)).size, 2)
+  assert.deepEqual(vehicles.map((vehicle) => vehicle.id), ['concept-gt', 'toyota-camry-2018', 'bmw-m5-f90'])
+  assert.equal(new Set(vehicles.map((vehicle) => vehicle.glbUrl)).size, 3)
   for (const vehicle of vehicles) assert.ok(existsSync(resolve(`public${vehicle.glbUrl}`)))
   const camry = registry.getVehicleById('toyota-camry-2018')
   assert.equal(camry.availability, 'limited-ready')
@@ -41,6 +47,15 @@ test('registry resolves two unique selectable model paths and conservative featu
   assert.equal(camry.features.spoiler, true)
   for (const feature of ['frontPlate', 'rearPlate']) {
     assert.equal(camry.features[feature], true, feature)
+  }
+  const bmw = registry.getVehicleById('bmw-m5-f90')
+  assert.equal(bmw.availability, 'limited-ready')
+  for (const feature of ['bodyPaint', 'bodyFinish', 'wheelFinish']) assert.equal(bmw.features[feature], true)
+  for (const feature of ['frontPlate', 'rearPlate']) assert.equal(bmw.features[feature], false, feature)
+  assert.equal(bmw.features.wheelDesign, true)
+  assert.equal(bmw.wheelReplacement.status, 'verified-combined')
+  for (const feature of ['windowTint', 'carbonHood', 'frontBumper', 'rearBumper', 'spoiler']) {
+    assert.equal(bmw.features[feature], false, feature)
   }
 })
 
@@ -63,8 +78,14 @@ test('vehicle switching, save, reset and export keep configurations independent'
   const camry = { ...DEFAULT_CONFIG, color: '#174cc1', tint: 'dark', wheelFinish: 'black', wheelDesign: 'forged', spoiler: true, carbonHood: true, frontBumperFinish: 'satin', rearBumperFinish: 'matte', plate: '07 KG 777 AAB' }
   storage.saveVehicleConfig(browser, 'concept-gt', concept)
   storage.saveVehicleConfig(browser, 'toyota-camry-2018', camry)
+  const bmw = { ...DEFAULT_CONFIG, color: '#e9e8e3', wheelFinish: 'graphite', plate: '10 KG 123 XYZ' }
+  storage.saveVehicleConfig(browser, 'bmw-m5-f90', bmw)
   let session = storage.readVehicleSession(browser)
-  assert.equal(session.activeVehicleId, 'toyota-camry-2018')
+  assert.equal(session.activeVehicleId, 'bmw-m5-f90')
+  assert.equal(storage.getSessionConfig(session).wheelFinish, 'graphite')
+  assert.equal(storage.getSessionConfig(session).plate, '10 KG 123 XYZ')
+  assert.equal(storage.createConfigurationExport('bmw-m5-f90', bmw).vehicleId, 'bmw-m5-f90')
+  assert.equal(storage.createConfigurationExport('bmw-m5-f90', bmw).configuration.plate, '10 KG 123 XYZ')
   session = storage.activateVehicle(session, 'concept-gt')
   assert.equal(storage.getSessionConfig(session).color, concept.color)
   assert.equal(storage.activateVehicle(session, 'unknown'), session)
@@ -87,19 +108,267 @@ test('vehicle switching, save, reset and export keep configurations independent'
   const after = storage.readVehicleSession(browser)
   assert.equal(after.configurations['toyota-camry-2018'], undefined)
   assert.equal(after.configurations['concept-gt'].color, concept.color)
+  assert.equal(after.configurations['bmw-m5-f90'].wheelFinish, 'graphite')
+  assert.equal(after.configurations['bmw-m5-f90'].plate, '10 KG 123 XYZ')
   assert.deepEqual(storage.getSessionConfig(after), storage.getDefaultVehicleConfig('toyota-camry-2018'))
   assert.equal(storage.createConfigurationExport('concept-gt', storage.getSessionConfig(storage.activateVehicle(after, 'concept-gt'))).vehicleId, 'concept-gt')
+  storage.resetVehicleConfig(browser, 'bmw-m5-f90')
+  const afterBMW = storage.readVehicleSession(browser)
+  assert.equal(afterBMW.configurations['bmw-m5-f90'], undefined)
+  assert.equal(afterBMW.configurations['concept-gt'].color, concept.color)
+  assert.deepEqual(storage.getSessionConfig(afterBMW), storage.getDefaultVehicleConfig('bmw-m5-f90'))
+})
+
+test('expanded finishes and colors survive storage and export without changing old values', () => {
+  const browser = memoryStorage()
+  assert.equal(PAINTS.length, 24)
+  assert.equal(new Set(PAINTS.map((paint) => paint.value)).size, PAINTS.length)
+  assert.ok(PAINTS.some((paint) => paint.label === 'Pearl White' && paint.value === '#e9e8e3'))
+  const expanded = { ...DEFAULT_CONFIG, color: '#332544', bodyFinish: 'metallic',
+    frontBumperFinish: 'metallic', wheelFinish: 'champagneGold', wheelDesign: 'mesh' }
+  storage.saveVehicleConfig(browser, 'toyota-camry-2018', expanded)
+  assert.deepEqual(storage.readVehicleSession(browser).configurations['toyota-camry-2018'], expanded)
+  assert.deepEqual(storage.createConfigurationExport('toyota-camry-2018', expanded).configuration, expanded)
+  const old = { ...DEFAULT_CONFIG, color: '#174cc1', bodyFinish: 'satin', wheelFinish: 'black' }
+  storage.saveVehicleConfig(browser, 'concept-gt', old)
+  assert.deepEqual(storage.readVehicleSession(browser).configurations['concept-gt'], old)
+  const source = new THREE.MeshPhysicalMaterial({ color: '#ffffff', clearcoat: 0.4 })
+  const owned = source.clone()
+  tuning.applyBodyFinish(owned, source, expanded.color, 'metallic')
+  assert.equal(owned.color.getHexString(), '332544')
+  assert.ok(owned.metalness > 0.6)
+  assert.ok(owned.roughness < 0.3)
+  assert.equal(source.color.getHexString(), 'ffffff')
+  owned.dispose(); source.dispose()
+})
+
+test('new rim styles stay within the Concept envelope and expose alloy, barrel and hub groups', () => {
+  const supported = wheelRims.customDesigns
+  assert.equal(supported.length, 9)
+  for (const design of supported) {
+    const geometry = wheelRims.createRimGeometry(design)
+    geometry.computeBoundingBox()
+    const box = geometry.boundingBox
+    assert.ok(box.min.x >= -0.134384 && box.max.x <= 0.144139, design)
+    assert.ok(Math.max(Math.abs(box.min.y), Math.abs(box.max.y), Math.abs(box.min.z), Math.abs(box.max.z)) < 0.303297, design)
+    assert.deepEqual(new Set(geometry.groups.map((group) => group.materialIndex)), new Set([0, 1, 2]))
+    geometry.dispose()
+  }
+  assert.equal(wheelDesigns.resolvedWheelDesign('concept-gt', 'luxurySplit'), 'original')
+  assert.equal(wheelDesigns.resolvedWheelDesign('toyota-camry-2018', 'deepConcave'), 'original')
+  assert.deepEqual(wheelDesigns.availableWheelDesigns('bmw-m5-f90').map((item) => item.value),
+    ['original', 'deepConcave', 'doubleSpoke', 'ySpoke'])
+})
+
+test('eight rim finishes have distinct alloy colors and PBR settings', () => {
+  const order = wheelFinishes.WHEEL_FINISH_ORDER
+  const presets = wheelFinishes.WHEEL_FINISHES
+  assert.equal(order.length, 8)
+  assert.equal(new Set(order.map((finish) => presets[finish].color)).size, 8)
+  const alloy = new THREE.MeshStandardMaterial()
+  for (const finish of order) {
+    tuning.applyRimFinish(alloy, finish)
+    assert.equal(alloy.color.getHexString(), presets[finish].color.slice(1))
+    assert.equal(alloy.metalness, presets[finish].metalness)
+    assert.equal(alloy.roughness, presets[finish].roughness)
+  }
+  alloy.dispose()
+})
+
+test('BMW four-wheel fitment, safe designs and original rim visibility are reversible', () => {
+  const audit = JSON.parse(readFileSync('tests/fixtures/stage-7-2-bmw-fitment.json', 'utf8'))
+  assert.equal(createHash('sha256').update(readFileSync(audit.asset)).digest('hex'), audit.assetSha256)
+  assert.deepEqual(bmwWheels.BMW_WHEEL_DESIGNS, ['doubleSpoke', 'ySpoke', 'deepConcave'])
+  assert.equal(bmwWheels.BMW_WHEEL_FITMENTS.length, 4)
+  for (const role of ['tire', 'rimBadge', 'auxiliaryRim', 'mainRim', 'rimNoTint', 'rimAccent', 'rimBlurred']) {
+    const node = audit.nodes[role]
+    assert.equal(node.crossingPolygons, 0, role)
+    assert.equal(node.crossCornerComponents, 0, role)
+    assert.ok(Object.values(node.cornerFaces).every((corner) => corner.triangles > 0), role)
+    assert.ok(Object.values(node.connectedComponents).every((islands) => islands.length > 0), role)
+    assert.ok(Object.values(node.cornerFaces).every((corner) => corner.outwardNormalRange.length === 2), role)
+  }
+  for (const fitment of bmwWheels.BMW_WHEEL_FITMENTS) {
+    const measured = audit.wheels[fitment.corner]
+    assert.ok(measured)
+    for (let axis = 0; axis < 3; axis++) assert.ok(Math.abs(measured.center[axis] - fitment.centerBlender[axis]) < 0.000002)
+    assert.ok(Math.abs(measured.parts.mainRim.radiusRange[1] - fitment.rimRadius) < 0.000002)
+    for (const design of bmwWheels.BMW_WHEEL_DESIGNS) {
+      assert.ok(Object.values(measured.replacementProbes[design].selectedFit.surfaceTriangleIntersections).every((count) => count === 0))
+    }
+  }
+  const root = new THREE.Group()
+  const sourceMeshes = bmwWheels.BMW_ORIGINAL_RIM_MESHES.map(({ leaf, material }) => {
+    const ownedMaterial = new THREE.MeshStandardMaterial()
+    ownedMaterial.name = material
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), ownedMaterial)
+    mesh.userData.name = leaf
+    root.add(mesh)
+    return mesh
+  })
+  const tire = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1))
+  tire.name = 'retained tire'
+  const brake = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1))
+  brake.name = 'retained brake'
+  root.add(tire, brake)
+  const resources = bmwWheels.createBMWWheelResources(root)
+  let releasedResources = 0
+  for (const geometry of resources.geometries.values()) geometry.addEventListener('dispose', () => { releasedResources++ })
+  for (const material of resources.materials) material.addEventListener('dispose', () => { releasedResources++ })
+  bmwWheels.applyBMWWheelSelection(resources, 'original', 'silver')
+  assert.ok(sourceMeshes.every((mesh) => mesh.visible))
+  assert.ok(resources.replacements.every((mesh) => !mesh.visible))
+  for (const design of bmwWheels.BMW_WHEEL_DESIGNS) {
+    bmwWheels.applyBMWWheelSelection(resources, design, 'gunmetal')
+    assert.ok(sourceMeshes.every((mesh) => !mesh.visible))
+    assert.ok(resources.replacements.every((mesh) => mesh.visible))
+    assert.equal(resources.materials[0].color.getHexString(), wheelFinishes.WHEEL_FINISHES.gunmetal.color.slice(1))
+    for (const [index, mesh] of resources.replacements.entries()) {
+      const placement = bmwWheels.bmwWheelPlacement(bmwWheels.BMW_WHEEL_FITMENTS[index])
+      const box = new THREE.Box3().setFromObject(mesh)
+      assert.ok(box.getCenter(new THREE.Vector3()).distanceTo(placement.center) < 0.00001)
+      assert.ok(mesh.geometry.groups.some((group) => group.materialIndex === 2))
+    }
+    assert.equal(tire.visible, true)
+    assert.equal(brake.visible, true)
+  }
+  assert.throws(() => bmwWheels.applyBMWWheelSelection(resources, 'mesh', 'silver'))
+  bmwWheels.applyBMWWheelSelection(resources, 'original', 'bronze')
+  assert.ok(sourceMeshes.every((mesh) => mesh.visible))
+  const childCount = root.children.length
+  resources.dispose()
+  assert.equal(root.children.length, childCount - 4)
+  assert.equal(releasedResources, 6)
+  assert.ok(sourceMeshes.every((mesh) => mesh.visible))
+  for (const mesh of sourceMeshes) { mesh.geometry.dispose(); mesh.material.dispose() }
+  tire.geometry.dispose(); tire.material.dispose(); brake.geometry.dispose(); brake.material.dispose()
+})
+
+test('BMW rim and paint bindings are isolated from tire, brake and mixed glass geometry', () => {
+  const bmw = registry.getVehicleById('bmw-m5-f90')
+  const paths = (role) => bmw.knownMeshes.find((part) => part.role === role).bindings.map((binding) => binding.nodePath.join('/'))
+  const rims = paths('rimMeshes')
+  assert.equal(rims.length, 3)
+  assert.equal(new Set(rims).size, 3)
+  assert.equal(paths('paintedMeshes').length, 1)
+  for (const path of [...paths('tireMeshes'), ...paths('brakeMeshes')]) assert.ok(!rims.includes(path))
+  assert.equal(bmw.knownMeshes.some((part) => part.role === 'windowGlass'), false)
+  const source = new THREE.MeshStandardMaterial({ color: '#ffffff', metalness: 0.8, roughness: 0.2 })
+  const tire = new THREE.MeshStandardMaterial({ color: '#222222' })
+  const owned = source.clone()
+  for (const finish of ['silver', 'graphite', 'black', 'bronze']) {
+    tuning.applyRimFinish(owned, finish)
+    assert.notEqual(owned.color.getHexString(), tire.color.getHexString())
+    assert.equal(source.color.getHexString(), 'ffffff')
+  }
+  owned.dispose(); source.dispose(); tire.dispose()
+})
+
+test('BMW audited paint atlas cannot mask color on the owned material', () => {
+  const bmw = registry.getVehicleById('bmw-m5-f90')
+  const bytes = readFileSync(resolve(`public${bmw.glbUrl}`))
+  const jsonLength = bytes.readUInt32LE(12)
+  const gltf = JSON.parse(bytes.toString('utf8', 20, 20 + jsonLength))
+  const paintMesh = gltf.meshes.find((mesh) => mesh.name === 'f_bmw_f90_m5_119_Carpaint_0')
+  assert.ok(paintMesh)
+  const primitive = paintMesh.primitives[0]
+  const uv = gltf.accessors[primitive.attributes.TEXCOORD_0]
+  assert.deepEqual(uv.min, [0, 0])
+  assert.deepEqual(uv.max, [0, 0])
+  const paintMaterial = gltf.materials[primitive.material]
+  assert.equal(paintMaterial.name, 'Carpaint')
+  assert.ok(paintMaterial.pbrMetallicRoughness.baseColorTexture)
+
+  const baseMap = new THREE.DataTexture(new Uint8Array([8, 8, 8, 255]), 1, 1)
+  const normalMap = new THREE.DataTexture(new Uint8Array([128, 128, 255, 255]), 1, 1)
+  const source = new THREE.MeshPhysicalMaterial({ color: '#ffffff', map: baseMap, normalMap, clearcoat: 1 })
+  const owned = tuning.clonePaintWithoutBaseColorMap(source)
+  assert.equal(source.map, baseMap)
+  assert.equal(owned.map, null)
+  assert.equal(owned.normalMap, normalMap)
+  const colors = new Set()
+  for (const finish of ['glossy', 'matte', 'satin']) {
+    for (const paint of PAINTS) {
+      tuning.applyBodyFinish(owned, source, paint.value, finish, 'camry')
+      assert.equal(owned.color.getHexString(), new THREE.Color(paint.value).getHexString())
+      assert.equal(owned.map, null)
+      colors.add(owned.color.getHexString())
+    }
+  }
+  assert.equal(colors.size, PAINTS.length)
+  assert.equal(source.color.getHexString(), 'ffffff')
+  assert.equal(source.map, baseMap)
+  owned.dispose(); source.dispose(); baseMap.dispose(); normalMap.dispose()
+})
+
+test('BMW plate calibration remains available while release controls are disabled', () => {
+  const bmw = registry.getVehicleById('bmw-m5-f90')
+  const footprint = JSON.parse(readFileSync('tests/fixtures/bmw-full-base-prototype-calibration.json', 'utf8'))
+  const calibration = JSON.parse(readFileSync('tests/fixtures/bmw-minimal-plate-calibration.json', 'utf8'))
+  const runtime = JSON.parse(readFileSync('src/components/bmwPlateMounts.json', 'utf8'))
+  const hash = createHash('sha256').update(readFileSync(resolve(`public${bmw.glbUrl}`))).digest('hex')
+  assert.equal(hash, '87fa667a173f3cc13a3f7375bfa2ce64be7d6c22aa886dc0b83de099b09b6c59')
+  assert.equal(hash, runtime.assetSha256)
+  assert.equal(hash, calibration.assetSha256)
+  assert.equal(hash, footprint.assetSha256)
+  for (const side of ['front', 'rear']) {
+    const mount = bmw.attachmentAnchors[`${side}Plate`]
+    const audit = calibration[side]
+    const profile = runtime.mounts[side]
+    assert.equal(bmw.features[`${side}Plate`], false)
+    assert.deepEqual(footprint[side].materials, ['Carpaint'])
+    assert.ok(footprint[side].minDepth > 0.002)
+    assert.equal(audit.pads.length, 2)
+    assert.equal(mount.bracket, undefined)
+    for (let axis = 0; axis < 3; axis++) {
+      assert.ok(Math.abs(mount.position[axis] - profile.position[axis]) < 0.000002)
+      assert.ok(Math.abs(mount.outwardNormal[axis] - profile.outwardNormal[axis]) < 0.000002)
+      assert.ok(Math.abs(mount.up[axis] - profile.up[axis]) < 0.000002)
+    }
+    assert.ok(Math.abs(mount.widthSourceUnits / mount.heightSourceUnits - 1024 / 300) < 0.03)
+    assert.equal(mount.widthSourceUnits, profile.width)
+    assert.equal(mount.heightSourceUnits, profile.height)
+    assert.ok(mount.widthSourceUnits >= 0.4)
+    assert.equal(mount.widthSourceUnits, footprint[side].plateWidth)
+    assert.equal(mount.heightSourceUnits, footprint[side].plateHeight)
+    assert.equal(attachments.getPlateBracketLayout(mount), null)
+    const rotation = attachments.getPlateQuaternion(mount)
+    const front = new THREE.Vector3(0, 0, 1).applyQuaternion(rotation)
+    const up = new THREE.Vector3(0, 1, 0).applyQuaternion(rotation)
+    assert.ok(front.distanceTo(new THREE.Vector3(...mount.outwardNormal)) < 0.000002)
+    assert.ok(up.distanceTo(new THREE.Vector3(...mount.up)) < 0.000002)
+    const pads = bmwMounts.getBMWPlatePadLayout(side, mount)
+    assert.equal(pads.length, 2)
+    for (const [index, pad] of profile.pads.entries()) {
+      assert.equal(audit.pads[index].samples.length, 81)
+      assert.ok(audit.pads[index].samples.every((sample) => sample.material === 'Carpaint'))
+      assert.ok(audit.pads[index].samples.every((sample) => sample.mesh.includes('119_Carpaint_0')))
+      assert.ok(pad.minDepth > runtime.frontOffset + pad.length)
+      assert.ok(Math.abs(pad.offsetX) + pad.width / 2 < mount.widthSourceUnits / 2)
+      assert.ok(Math.abs(pad.offsetY) + pad.height / 2 < mount.heightSourceUnits / 2)
+      assert.ok(Math.abs(pads[index].position[2] + runtime.frontOffset + pad.length / 2) < 0.000001)
+      assert.deepEqual(pads[index].size, [pad.width, pad.height, pad.length])
+    }
+  }
+  assert.deepEqual(registry.getVehicleById('concept-gt').attachmentAnchors.frontPlate.position, [0, 0.40, 2.42])
+  assert.equal(registry.getVehicleById('toyota-camry-2018').features.frontPlate, true)
+  assert.equal(registry.getVehicleById('toyota-camry-2018').features.rearPlate, true)
+  for (const region of REGIONS) {
+    const value = formatPlate(region, '123', 'XYZ')
+    assert.deepEqual(parsePlate(value), { region, digits: '123', letters: 'XYZ' })
+  }
 })
 
 test('GLB structure, feature dependencies and mapped mesh materials are valid', () => {
   const reports = validateAllVehicles()
-  assert.equal(reports.length, 2)
+  assert.equal(reports.length, 3)
   for (const report of reports) {
     assert.deepEqual(report.errors, [])
     assert.ok(report.mappings.length > 0)
     assert.ok(report.mappings.every((mapping) => mapping.valid))
   }
   assert.equal(reports.find((report) => report.vehicleId === 'toyota-camry-2018').triangles, 875294)
+  assert.equal(reports.find((report) => report.vehicleId === 'bmw-m5-f90').triangles, 259936)
   const camry = registry.getVehicleById('toyota-camry-2018')
   const unsafe = validateGlb({ ...camry, wheelReplacement: { status: 'unverified', reason: 'test' },
     attachmentAnchors: { frontPlate: null, rearPlate: null, spoilerMounts: null },
@@ -166,7 +435,7 @@ test('replacement fitment requires four distinct measured rims and outward unit 
   const mounts = camry.wheelReplacement.mounts
   const placements = fitment.validateWheelReplacementMounts(mounts)
   assert.equal(placements.length, 4)
-  const audit = JSON.parse(readFileSync('codex-reports/camry-geometry-audit.json', 'utf8'))
+  const audit = JSON.parse(readFileSync('tests/fixtures/camry-geometry-audit.json', 'utf8'))
   for (const [index, name] of ['WHEEL_LF', 'WHEEL_LR', 'WHEEL_RR', 'WHEEL_RF'].entries()) {
     const measured = audit.wheels[name]
     assert.ok(placements[index].center.distanceTo(new THREE.Vector3(...measured.rim.bounds.center)) < 0.000002)
@@ -189,7 +458,7 @@ test('replacement fitment requires four distinct measured rims and outward unit 
 
 test('corrected Camry rim and hubcap materials still resolve to the exact wheels', () => {
   const camry = registry.getVehicleById('toyota-camry-2018')
-  const audit = JSON.parse(readFileSync('codex-reports/camry-geometry-audit.json', 'utf8'))
+  const audit = JSON.parse(readFileSync('tests/fixtures/camry-geometry-audit.json', 'utf8'))
   const bytes = readFileSync(audit.asset)
   const jsonLength = bytes.readUInt32LE(12)
   const gltf = JSON.parse(bytes.toString('utf8', 20, 20 + jsonLength))
@@ -286,8 +555,10 @@ test('corrected Camry rim and hubcap materials still resolve to the exact wheels
   assert.ok(originals.every((mesh) => mesh.visible))
   assert.ok(covers.every((mesh) => mesh.visible))
   assert.equal(tire.visible, true)
-  const finishColors = { silver: 'cbd4dc', graphite: '535b65', black: '171b22' }
-  for (const design of ['original', 'sport', 'multi', 'forged']) for (const [finish, hex] of Object.entries(finishColors)) {
+  const finishColors = { silver: 'cbd4dc', graphite: '535b65', black: '171b22', bronze: '8b6848',
+    champagneGold: 'baa174', gunmetal: '42494e', titanium: '89969d', polishedAlloy: 'dce3e8' }
+  const designs = ['original', 'sport', 'multi', 'forged', 'deepConcave', 'doubleSpoke', 'ySpoke', 'luxurySplit', 'turbine', 'mesh']
+  for (const design of designs) for (const [finish, hex] of Object.entries(finishColors)) {
     for (const rim of originals) tuning.applyRimFinish(rim.material, finish)
     wheelSystem.applyVehicleWheelSelection(resources, design, finish)
     assert.ok(originals.every((mesh) => mesh.visible === (design === 'original')))
@@ -335,7 +606,7 @@ test('corrected Camry rim and hubcap materials still resolve to the exact wheels
 })
 
 test('geometry audit confirms independent hood and bumper meshes plus measured wheel bounds', () => {
-  const audit = JSON.parse(readFileSync('codex-reports/camry-geometry-audit.json', 'utf8'))
+  const audit = JSON.parse(readFileSync('tests/fixtures/camry-geometry-audit.json', 'utf8'))
   const assetHash = createHash('sha256').update(readFileSync(audit.asset)).digest('hex')
   assert.equal(audit.sha256, assetHash)
   const byName = Object.fromEntries(audit.selected.map((part) => [part.path.split('/').at(-1), part]))
@@ -447,12 +718,12 @@ test('KG plate validation, measured bracket contacts and full footprints', () =>
   assert.equal(validateStoredConfig({ frontBumperFinish: 'invalid' }).frontBumperFinish, 'body')
   const camry = registry.getVehicleById('toyota-camry-2018')
   for (const feature of ['frontPlate', 'rearPlate']) assert.equal(camry.features[feature], true)
-  const calibration = JSON.parse(readFileSync('codex-reports/camry-anchor-calibration.json', 'utf8'))
+  const calibration = JSON.parse(readFileSync('tests/fixtures/camry-anchor-calibration.json', 'utf8'))
   assert.equal(calibration.frontPlate.hits, 44)
   assert.equal(calibration.frontPlate.totalSamples, 77)
   assert.equal(calibration.rearPlate.hits, 77)
   assert.ok(calibration.rearPlate.maxGapAtSafePlane > 0.015)
-  const probe = JSON.parse(readFileSync('codex-reports/camry-plate-bracket-probe.json', 'utf8'))
+  const probe = JSON.parse(readFileSync('tests/fixtures/camry-plate-bracket-probe.json', 'utf8'))
   for (const side of ['front', 'rear']) {
     const mount = camry.attachmentAnchors[`${side}Plate`]
     const footprint = probe.mountCandidates[side]
@@ -504,8 +775,8 @@ test('KG plate validation, measured bracket contacts and full footprints', () =>
 
 test('Camry spoiler contacts and rendered geometry satisfy audited clearance limits', () => {
   const camry = registry.getVehicleById('toyota-camry-2018')
-  const calibration = JSON.parse(readFileSync('codex-reports/camry-anchor-calibration.json', 'utf8'))
-  const clearance = JSON.parse(readFileSync('codex-reports/camry-spoiler-clearance.json', 'utf8'))
+  const calibration = JSON.parse(readFileSync('tests/fixtures/camry-anchor-calibration.json', 'utf8'))
+  const clearance = JSON.parse(readFileSync('tests/fixtures/camry-spoiler-clearance.json', 'utf8'))
   const mount = camry.attachmentAnchors.spoilerMounts
   assert.equal(camry.features.spoiler, true)
   assert.ok(mount)
@@ -522,5 +793,35 @@ test('Camry spoiler contacts and rendered geometry satisfy audited clearance lim
     assert.deepEqual(piece.otherGeometryIntersections, {})
     if (piece.piece.includes('foot')) assert.ok(piece.trunkTriangleIntersections > 0)
     else assert.equal(piece.trunkTriangleIntersections, 0)
+  }
+})
+
+test('optimized Camry candidate preserves mapped tuning meshes and runtime center-cap extraction', {
+  skip: !existsSync('public/models/candidates/ToyotaCamry2018_WebCandidate_v3.glb'),
+}, () => {
+  const report = verifyCamryCandidate()
+  assert.deepEqual(report.structuralErrors, [])
+  assert.equal(report.wheelCount, 4)
+  assert.equal(report.validMappings, 54)
+  for (const wheel of report.wheels) {
+    assert.equal(wheel.before.rimTriangles, wheel.after.rimTriangles)
+    assert.equal(wheel.before.coverTriangles, wheel.after.coverTriangles)
+    assert.equal(wheel.after.retainedCenterTriangles, 1534)
+  }
+  const probes = JSON.parse(readFileSync('codex-reports/camry-candidate-mount-verification.json', 'utf8'))
+  for (const [key, url] of [['current', report.currentUrl], ['candidate', report.candidateUrl]]) {
+    const hash = createHash('sha256').update(readFileSync(resolve(`public${url}`))).digest('hex')
+    assert.equal(probes[key].assetSha256, hash, `${key} surface probe is stale`)
+    for (const side of ['frontPlate', 'rearPlate']) {
+      assert.equal(probes[key][side].samples, 153)
+      assert.equal(probes[key][side].bodySampleHits, 153)
+      assert.equal(probes[key][side].sampledBodyClearancePass, true)
+      assert.ok(probes[key][side].contactDistances.every((contact) => contact.distance < 0.0001))
+    }
+    for (const contact of probes[key].spoiler) {
+      assert.ok(contact.contactDistance < 0.0001)
+      assert.equal(contact.patchHits, 25)
+      assert.ok(contact.patchMinNormalUp > 0.98)
+    }
   }
 })

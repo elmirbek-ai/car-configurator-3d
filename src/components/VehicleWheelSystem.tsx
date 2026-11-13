@@ -5,13 +5,10 @@ import type { SourceWheelReplacementMount } from '../vehicleDescriptor'
 import type { WheelDesign, WheelFinish } from '../types'
 import { extractCenterCapGeometry, placeReplacementRim, validateWheelReplacementMounts } from '../vehicleWheelFitment'
 import { applyRimFinish, resolveBoundMeshIdentity } from '../vehicleTuning'
-import { createRimGeometry } from './WheelRims'
+import { createRimGeometry, createRimMaterials, customDesigns } from './WheelRims'
 
 type CustomDesign = Exclude<WheelDesign, 'original'>
-const designs: readonly CustomDesign[] = ['sport', 'multi', 'forged']
-const colors: Record<WheelFinish, string> = {
-  silver: '#cbd4dc', graphite: '#535b65', black: '#171b22',
-}
+const designs: readonly CustomDesign[] = customDesigns
 
 type WheelResources = {
   placements: ReturnType<typeof validateWheelReplacementMounts>
@@ -21,6 +18,7 @@ type WheelResources = {
   replacements: THREE.Mesh[]
   geometries: Map<CustomDesign, THREE.BufferGeometry>
   material: THREE.MeshStandardMaterial
+  materials: THREE.MeshStandardMaterial[]
   dispose: () => void
 }
 
@@ -35,7 +33,8 @@ export function createVehicleWheelResources(root: THREE.Object3D,
   const covers: WheelResources['covers'] = []
   const coverMaterials = new Map<THREE.MeshStandardMaterial, THREE.MeshStandardMaterial>()
   const geometries = new Map<CustomDesign, THREE.BufferGeometry>()
-  const material = new THREE.MeshStandardMaterial({ metalness: 0.85, roughness: 0.22, envMapIntensity: 1.1, side: THREE.DoubleSide })
+  const materials = createRimMaterials('silver')
+  const material = materials[0]
   const replacements: THREE.Mesh[] = []
   try {
     root.updateWorldMatrix(true, false)
@@ -69,7 +68,7 @@ export function createVehicleWheelResources(root: THREE.Object3D,
     for (const placement of placements) {
       const geometry = geometries.get('sport')
       if (!geometry) throw new Error('Sport rim geometry missing')
-      const mesh = new THREE.Mesh(geometry, material)
+      const mesh = new THREE.Mesh(geometry, materials)
       mesh.name = `replacement-${placement.rim.nodePath.at(-1)}`
       placeReplacementRim(mesh, placement, geometry)
       mesh.castShadow = true
@@ -87,10 +86,10 @@ export function createVehicleWheelResources(root: THREE.Object3D,
     })
     coverMaterials.forEach((finishMaterial) => finishMaterial.dispose())
     geometries.forEach((geometry) => geometry.dispose())
-    material.dispose()
+    materials.forEach((owned) => owned.dispose())
     throw error
   }
-  return { placements, originals, covers, coverFinishMaterials: new Set(coverMaterials.values()), replacements, geometries, material,
+  return { placements, originals, covers, coverFinishMaterials: new Set(coverMaterials.values()), replacements, geometries, material, materials,
     dispose: () => {
       originals.forEach(({ mesh, visible }) => { mesh.visible = visible })
       covers.forEach(({ mesh, visible, center, originalMaterial }) => {
@@ -102,13 +101,13 @@ export function createVehicleWheelResources(root: THREE.Object3D,
       coverMaterials.forEach((finishMaterial) => finishMaterial.dispose())
       replacements.forEach((mesh) => mesh.removeFromParent())
       geometries.forEach((geometry) => geometry.dispose())
-      material.dispose()
+      materials.forEach((owned) => owned.dispose())
     },
   }
 }
 
 export function applyVehicleWheelSelection(owned: WheelResources, design: WheelDesign, finish: WheelFinish) {
-  owned.material.color.set(colors[finish])
+  applyRimFinish(owned.material, finish)
   owned.coverFinishMaterials.forEach((material) => applyRimFinish(material, finish))
   const geometry = design === 'original' ? null : owned.geometries.get(design)
   if (design !== 'original' && !geometry) throw new Error(`Unknown rim design: ${design}`)
