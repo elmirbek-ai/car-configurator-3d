@@ -90,7 +90,9 @@ export function extractCenterCapGeometry(cover: THREE.Mesh, wheelCenterWorld: TH
 }
 
 /** Fits the full generated geometry envelope inside the audited rim radius and depth. */
-export function placeReplacementRim(mesh: THREE.Mesh, placement: ReturnType<typeof validateWheelReplacementMounts>[number], geometry: THREE.BufferGeometry) {
+export function placeReplacementRim(mesh: THREE.Mesh,
+  placement: Pick<ReturnType<typeof validateWheelReplacementMounts>[number], 'center' | 'quaternion' | 'radius' | 'depth'>,
+  geometry: THREE.BufferGeometry) {
   geometry.computeBoundingBox()
   const bounds = geometry.boundingBox
   if (!bounds) throw new Error('Replacement rim geometry has no bounds')

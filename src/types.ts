@@ -1,7 +1,7 @@
-export type WheelFinish = 'silver' | 'graphite' | 'black'
-export type WheelDesign = 'original' | 'sport' | 'multi' | 'forged'
+export type WheelFinish = 'silver' | 'graphite' | 'black' | 'bronze' | 'champagneGold' | 'gunmetal' | 'titanium' | 'polishedAlloy'
+export type WheelDesign = 'original' | 'sport' | 'multi' | 'forged' | 'deepConcave' | 'doubleSpoke' | 'ySpoke' | 'luxurySplit' | 'turbine' | 'mesh'
 export type TintLevel = 'clear' | 'light' | 'medium' | 'dark'
-export type BodyFinish = 'glossy' | 'matte' | 'satin'
+export type BodyFinish = 'glossy' | 'matte' | 'satin' | 'metallic'
 export type BumperFinish = 'body' | BodyFinish
 export type CarConfiguration = {
   color: string
@@ -25,6 +25,24 @@ export const PAINTS = [
   { label: 'Crimson Red', value: '#a31325' },
   { label: 'Electric Blue', value: '#174cc1' },
   { label: 'Forest Green', value: '#22564b' },
+  { label: 'Graphite Grey', value: '#515b64' },
+  { label: 'Titanium Silver', value: '#b9bec1' },
+  { label: 'Champagne', value: '#b8a58b' },
+  { label: 'Copper Bronze', value: '#8c5b43' },
+  { label: 'Deep Burgundy', value: '#592633' },
+  { label: 'Sunset Orange', value: '#c65f2c' },
+  { label: 'Racing Yellow', value: '#d8ac24' },
+  { label: 'Lagoon Blue', value: '#267b91' },
+  { label: 'Navy Blue', value: '#243b67' },
+  { label: 'Sage Green', value: '#788b72' },
+  { label: 'Olive Green', value: '#4e5a38' },
+  { label: 'Ice Blue', value: '#a7cbd4' },
+  { label: 'Midnight Purple', value: '#332544' },
+  { label: 'Racing Green', value: '#174434' },
+  { label: 'Desert Sand', value: '#bfa984' },
+  { label: 'Deep Teal', value: '#175b60' },
+  { label: 'Satin Steel', value: '#89969a' },
+  { label: 'Storm Blue', value: '#526b83' },
 ] as const
 
 export const REGIONS = Array.from({ length: 10 }, (_, i) => String(i + 1).padStart(2, '0'))
@@ -39,16 +57,16 @@ export function validateStoredConfig(value: unknown): CarConfiguration {
   return {
     color: typeof stored.color === 'string' && storedColorPattern.test(stored.color)
       ? stored.color : DEFAULT_CONFIG.color,
-    bodyFinish: stored.bodyFinish === 'glossy' || stored.bodyFinish === 'matte' || stored.bodyFinish === 'satin'
+    bodyFinish: stored.bodyFinish === 'glossy' || stored.bodyFinish === 'matte' || stored.bodyFinish === 'satin' || stored.bodyFinish === 'metallic'
       ? stored.bodyFinish : DEFAULT_CONFIG.bodyFinish,
-    frontBumperFinish: stored.frontBumperFinish === 'body' || stored.frontBumperFinish === 'glossy' || stored.frontBumperFinish === 'matte' || stored.frontBumperFinish === 'satin'
+    frontBumperFinish: stored.frontBumperFinish === 'body' || stored.frontBumperFinish === 'glossy' || stored.frontBumperFinish === 'matte' || stored.frontBumperFinish === 'satin' || stored.frontBumperFinish === 'metallic'
       ? stored.frontBumperFinish : DEFAULT_CONFIG.frontBumperFinish,
-    rearBumperFinish: stored.rearBumperFinish === 'body' || stored.rearBumperFinish === 'glossy' || stored.rearBumperFinish === 'matte' || stored.rearBumperFinish === 'satin'
+    rearBumperFinish: stored.rearBumperFinish === 'body' || stored.rearBumperFinish === 'glossy' || stored.rearBumperFinish === 'matte' || stored.rearBumperFinish === 'satin' || stored.rearBumperFinish === 'metallic'
       ? stored.rearBumperFinish : DEFAULT_CONFIG.rearBumperFinish,
     carbonHood: typeof stored.carbonHood === 'boolean' ? stored.carbonHood : DEFAULT_CONFIG.carbonHood,
-    wheelFinish: stored.wheelFinish === 'silver' || stored.wheelFinish === 'graphite' || stored.wheelFinish === 'black'
+    wheelFinish: stored.wheelFinish === 'silver' || stored.wheelFinish === 'graphite' || stored.wheelFinish === 'black' || stored.wheelFinish === 'bronze' || stored.wheelFinish === 'champagneGold' || stored.wheelFinish === 'gunmetal' || stored.wheelFinish === 'titanium' || stored.wheelFinish === 'polishedAlloy'
       ? stored.wheelFinish : DEFAULT_CONFIG.wheelFinish,
-    wheelDesign: stored.wheelDesign === 'original' || stored.wheelDesign === 'sport' || stored.wheelDesign === 'multi' || stored.wheelDesign === 'forged'
+    wheelDesign: stored.wheelDesign === 'original' || stored.wheelDesign === 'sport' || stored.wheelDesign === 'multi' || stored.wheelDesign === 'forged' || stored.wheelDesign === 'deepConcave' || stored.wheelDesign === 'doubleSpoke' || stored.wheelDesign === 'ySpoke' || stored.wheelDesign === 'luxurySplit' || stored.wheelDesign === 'turbine' || stored.wheelDesign === 'mesh'
       ? stored.wheelDesign : DEFAULT_CONFIG.wheelDesign,
     tint: stored.tint === 'clear' || stored.tint === 'light' || stored.tint === 'medium' || stored.tint === 'dark'
       ? stored.tint : DEFAULT_CONFIG.tint,

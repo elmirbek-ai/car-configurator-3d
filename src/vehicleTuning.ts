@@ -1,5 +1,6 @@
 import * as THREE from 'three'
-import type { BodyFinish, TintLevel } from './types'
+import type { BodyFinish, TintLevel, WheelFinish } from './types'
+import { WHEEL_FINISHES } from './wheelFinishes'
 import type { VehicleRegistryEntry } from './vehicleRegistry'
 import type { MeshBinding } from './vehicleDescriptor'
 
@@ -45,12 +46,20 @@ export function resolveTuningMeshes(root: THREE.Object3D, vehicle: VehicleRegist
 export function applyBodyFinish(material: THREE.MeshStandardMaterial, source: THREE.MeshStandardMaterial,
   color: string, finish: BodyFinish, profile: 'concept' | 'camry' = 'concept') {
   material.color.set(color)
-  material.metalness = finish === 'glossy' ? (profile === 'camry' ? 0.25 : 0.42) : finish === 'satin' ? 0.2 : 0.06
-  material.roughness = finish === 'glossy' ? (profile === 'camry' ? 0.3 : 0.24) : finish === 'satin' ? 0.46 : 0.78
+  material.metalness = finish === 'metallic' ? 0.68 : finish === 'glossy' ? (profile === 'camry' ? 0.25 : 0.42) : finish === 'satin' ? 0.2 : 0.06
+  material.roughness = finish === 'metallic' ? 0.27 : finish === 'glossy' ? (profile === 'camry' ? 0.3 : 0.24) : finish === 'satin' ? 0.46 : 0.78
   if (material instanceof THREE.MeshPhysicalMaterial && source instanceof THREE.MeshPhysicalMaterial) {
-    material.clearcoat = finish === 'glossy' ? source.clearcoat : finish === 'satin' ? Math.max(0.08, source.clearcoat * 0.35) : 0.04
-    material.clearcoatRoughness = finish === 'glossy' ? source.clearcoatRoughness : finish === 'satin' ? 0.38 : 0.65
+    material.clearcoat = finish === 'metallic' ? Math.max(0.5, source.clearcoat) : finish === 'glossy' ? source.clearcoat : finish === 'satin' ? Math.max(0.08, source.clearcoat * 0.35) : 0.04
+    material.clearcoatRoughness = finish === 'metallic' ? 0.18 : finish === 'glossy' ? source.clearcoatRoughness : finish === 'satin' ? 0.38 : 0.65
   }
+}
+
+/** Use when audited paint UVs collapse onto one dark base-color texel. Keep all other PBR maps. */
+export function clonePaintWithoutBaseColorMap(source: THREE.MeshPhysicalMaterial): THREE.MeshPhysicalMaterial {
+  const owned = source.clone()
+  owned.map = null
+  owned.needsUpdate = true
+  return owned
 }
 
 export function applyWindowTint(material: THREE.MeshPhysicalMaterial, source: THREE.MeshPhysicalMaterial, tint: TintLevel) {
@@ -68,11 +77,11 @@ export function applyWindowTint(material: THREE.MeshPhysicalMaterial, source: TH
   }
 }
 
-export function applyRimFinish(material: THREE.MeshStandardMaterial, finish: 'silver' | 'graphite' | 'black') {
-  const colors = { silver: '#cbd4dc', graphite: '#535b65', black: '#171b22' }
-  material.color.set(colors[finish])
-  material.metalness = 0.85
-  material.roughness = 0.22
+export function applyRimFinish(material: THREE.MeshStandardMaterial, finish: WheelFinish) {
+  const preset = WHEEL_FINISHES[finish]
+  material.color.set(preset.color)
+  material.metalness = preset.metalness
+  material.roughness = preset.roughness
 }
 
 /** Small repeating weave; owned by the scene adapter and never written to the GLB cache. */

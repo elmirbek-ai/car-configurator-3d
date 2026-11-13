@@ -12,11 +12,15 @@ import { createCorrectedMaterial, disposeLoadedScene } from './camryAssets'
 import { camryViews, getCamryCameraPose, type CamryView } from './camryCamera'
 import { VehicleWheelSystem } from './VehicleWheelSystem'
 import { VehiclePlates, VehicleSpoiler } from './VehicleAttachments'
+import { resolvedWheelDesign } from '../wheelDesigns'
 
 type LoadStatus = { kind: 'loading' } | { kind: 'ready' } | { kind: 'error'; message: string }
 type PaintRole = 'body' | 'hood' | 'frontBumper' | 'rearBumper'
 type PaintPair = { material: THREE.MeshPhysicalMaterial; source: THREE.MeshPhysicalMaterial; role: PaintRole }
 type AnchorInspection = { part: string; point: [number, number, number]; normal: [number, number, number] }
+type LoadMetrics = { bytes: number; transferBytes: number | null; fetchMs: number; parseMs: number; readyMs: number; triangles: number; startedAt: number }
+type FrameMetrics = { fps: number; frameMs: number; drawCalls: number; geometries: number; textures: number }
+const candidateUrl = '/models/candidates/ToyotaCamry2018_WebCandidate_v3.glb'
 const vec3 = (vector: THREE.Vector3): [number, number, number] => [vector.x, vector.y, vector.z]
 type CamryOwnedModel = {
   root: THREE.Group
@@ -30,13 +34,14 @@ type CamryOwnedModel = {
 // parseAsync cannot be cancelled; queue retries so an old parse is disposed before the next starts.
 let loadQueue: Promise<void> = Promise.resolve()
 
-function CamryModel({ url, config, debug, onInspect, onReady, onStatus }: {
+function CamryModel({ url, config, debug, onInspect, onReady, onStatus, onMetrics }: {
   url: string
   config: CarConfiguration
   debug: boolean
   onInspect: (inspection: AnchorInspection) => void
   onReady: (bounds: THREE.Box3) => void
   onStatus: (status: LoadStatus) => void
+  onMetrics: (metrics: LoadMetrics) => void
 }) {
   const vehicle = getVehicleById('toyota-camry-2018')
   const invalidate = useThree((state) => state.invalidate)
@@ -55,11 +60,14 @@ function CamryModel({ url, config, debug, onInspect, onReady, onStatus }: {
       if (!active) return
       let parsed: THREE.Group | null = null
       try {
+        const startedAt = performance.now()
         const response = await fetch(url, { signal: controller.signal })
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`)
         const buffer = await response.arrayBuffer()
+        const fetchDone = performance.now()
         if (!active) return
         parsed = (await new GLTFLoader().parseAsync(buffer, url.slice(0, url.lastIndexOf('/') + 1))).scene
+        const parseDone = performance.now()
         if (!active) {
           disposeLoadedScene(parsed)
           parsed = null
@@ -109,6 +117,12 @@ function CamryModel({ url, config, debug, onInspect, onReady, onStatus }: {
         }
         const bounds = new THREE.Box3().setFromObject(parsed)
         if (bounds.isEmpty()) throw new Error('Camry GLB has no visible geometry')
+        let triangles = 0
+        parsed.traverse((object) => {
+          if (!(object instanceof THREE.Mesh)) return
+          const geometry = object.geometry
+          triangles += Math.floor((geometry.index?.count ?? geometry.attributes.position.count) / 3)
+        })
         const debugBounds = (debug ? [
           { part: 'Front plate candidate fascia', mesh: frontBumper },
           { part: 'Rear plate and spoiler candidate trunk', mesh: trunk },
@@ -137,6 +151,10 @@ function CamryModel({ url, config, debug, onInspect, onReady, onStatus }: {
         for (const pair of [...paintPairs, ...glassPairs]) correctedMaterials.set(pair.source, pair.source)
         setModel({ root: owned, paint: paintPairs, glass: glassPairs, rims, carbonTexture, debugBounds })
         onReady(bounds)
+        const resource = performance.getEntriesByName(new URL(url, window.location.href).href, 'resource').at(-1)
+        const transferBytes = typeof PerformanceResourceTiming !== 'undefined' && resource instanceof PerformanceResourceTiming ? resource.transferSize : null
+        onMetrics({ bytes: buffer.byteLength, transferBytes, fetchMs: fetchDone - startedAt, parseMs: parseDone - fetchDone,
+          readyMs: performance.now() - startedAt, triangles, startedAt })
         onStatus({ kind: 'ready' })
         invalidate()
       } catch (error) {
@@ -154,7 +172,7 @@ function CamryModel({ url, config, debug, onInspect, onReady, onStatus }: {
       controller.abort()
       if (owned) disposeLoadedScene(owned, [...sourceMaterials, ...correctedMaterials.values()], carbonTexture ? [carbonTexture] : [])
     }
-  }, [url, onReady, onStatus, invalidate])
+  }, [url, onReady, onStatus, onMetrics, invalidate])
 
   useEffect(() => {
     if (!model) return
@@ -184,7 +202,7 @@ function CamryModel({ url, config, debug, onInspect, onReady, onStatus }: {
   return model ? <>
     <primitive object={model.root} dispose={null} onPointerDown={debug ? inspect : undefined} />
     {vehicle?.features.wheelDesign && vehicle.wheelReplacement.status === 'verified' &&
-      <VehicleWheelSystem root={model.root} vehicleId={vehicle.id} mounts={vehicle.wheelReplacement.mounts} design={config.wheelDesign} finish={config.wheelFinish} />}
+      <VehicleWheelSystem root={model.root} vehicleId={vehicle.id} mounts={vehicle.wheelReplacement.mounts} design={resolvedWheelDesign(vehicle.id, config.wheelDesign)} finish={config.wheelFinish} />}
     {(vehicle?.features.frontPlate || vehicle?.features.rearPlate) &&
       <VehiclePlates text={config.plate} front={vehicle.features.frontPlate ? vehicle.attachmentAnchors.frontPlate : null}
         rear={vehicle.features.rearPlate ? vehicle.attachmentAnchors.rearPlate : null} />}
@@ -196,7 +214,7 @@ function CamryModel({ url, config, debug, onInspect, onReady, onStatus }: {
   </> : null
 }
 
-function CamryStudio() {
+export function CamryStudio() {
   const gl = useThree((state) => state.gl)
   const scene = useThree((state) => state.scene)
   const invalidate = useThree((state) => state.invalidate)
@@ -237,7 +255,7 @@ function CamryStudio() {
   </>
 }
 
-function CamryCameraRig({ bounds, request, activeView, onManualChange }: {
+export function CamryCameraRig({ bounds, request, activeView, onManualChange }: {
   bounds: THREE.Box3 | null
   request: { view: CamryView; sequence: number }
   activeView: CamryView
@@ -304,6 +322,36 @@ function WebGLFailure({ onFailure }: { onFailure: (status: LoadStatus) => void }
   return <div className="canvas-fallback" role="alert">Бул түзмөктө WebGL жеткиликтүү эмес.</div>
 }
 
+function CamryDiagnostics({ enabled, ready, startedAt, onFrame, onFirstFrame }: {
+  enabled: boolean; ready: boolean; startedAt: number | null
+  onFrame: (metrics: FrameMetrics) => void; onFirstFrame: (elapsedMs: number) => void
+}) {
+  const invalidate = useThree((state) => state.invalidate)
+  const samples = useRef({ count: 0, duration: 0, firstReported: false })
+  useEffect(() => { samples.current = { count: 0, duration: 0, firstReported: false } }, [startedAt])
+  useFrame(({ gl }, delta) => {
+    if (!enabled || !ready || startedAt === null) return
+    const current = samples.current
+    if (!current.firstReported) {
+      current.firstReported = true
+      onFirstFrame(performance.now() - startedAt)
+      invalidate()
+      return
+    }
+    current.count += 1
+    current.duration += delta
+    if (current.count >= 30) {
+      const frameMs = current.duration * 1000 / current.count
+      onFrame({ fps: 1000 / frameMs, frameMs, drawCalls: gl.info.render.calls,
+        geometries: gl.info.memory.geometries, textures: gl.info.memory.textures })
+      current.count = 0
+      current.duration = 0
+    }
+    invalidate()
+  })
+  return null
+}
+
 export default function CamryScene({ config = DEFAULT_CONFIG, embedded = false }: { config?: CarConfiguration; embedded?: boolean } = {}) {
   const vehicle = getVehicleById('toyota-camry-2018')
   const [bounds, setBounds] = useState<THREE.Box3 | null>(null)
@@ -315,10 +363,29 @@ export default function CamryScene({ config = DEFAULT_CONFIG, embedded = false }
   const onManualChange = useCallback(() => setView('free'), [])
   const [inspection, setInspection] = useState<AnchorInspection | null>(null)
   const debug = import.meta.env.DEV && new URLSearchParams(window.location.search).has('camry-anchors')
+  const compare = import.meta.env.DEV && new URLSearchParams(window.location.search).has('camry-compare')
+  const [variant, setVariant] = useState<'current' | 'candidate'>('current')
+  const [loadMetrics, setLoadMetrics] = useState<LoadMetrics | null>(null)
+  const [frameMetrics, setFrameMetrics] = useState<FrameMetrics | null>(null)
+  const [firstFrameMs, setFirstFrameMs] = useState<number | null>(null)
+  const onMetrics = useCallback((next: LoadMetrics) => setLoadMetrics(next), [])
+  const onFrame = useCallback((next: FrameMetrics) => setFrameMetrics(next), [])
+  const onFirstFrame = useCallback((elapsed: number) => setFirstFrameMs(elapsed), [])
   const onInspect = useCallback((next: AnchorInspection) => setInspection(next), [])
 
   if (!vehicle || vehicle.cameraOrientation.sourceForward !== '+z' || vehicle.cameraOrientation.sourceUp !== '+y') {
     return <main role="alert">Camry registry metadata is unavailable or has an unsupported orientation.</main>
+  }
+
+  const modelUrl = compare && variant === 'candidate' ? candidateUrl : vehicle.glbUrl
+  const switchVariant = (next: 'current' | 'candidate') => {
+    if (next === variant) return
+    setVariant(next)
+    setBounds(null)
+    setStatus({ kind: 'loading' })
+    setLoadMetrics(null)
+    setFrameMetrics(null)
+    setFirstFrameMs(null)
   }
 
   return <div className={embedded ? 'embedded-camry' : 'app-shell'}>
@@ -337,11 +404,13 @@ export default function CamryScene({ config = DEFAULT_CONFIG, embedded = false }
           {bounds && <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, bounds.min.y - 0.015, 0]} receiveShadow>
             <planeGeometry args={[30, 30]} /><meshStandardMaterial color="#4a535c" roughness={0.95} />
           </mesh>}
-          <CamryModel key={retry} url={vehicle.glbUrl} config={config} debug={debug} onInspect={onInspect} onReady={onReady} onStatus={setStatus} />
+          <CamryModel key={`${modelUrl}:${retry}`} url={modelUrl} config={config} debug={debug} onInspect={onInspect} onReady={onReady} onStatus={setStatus} onMetrics={onMetrics} />
           {debug && inspection && <mesh position={inspection.point} raycast={() => {}}>
             <sphereGeometry args={[0.018, 12, 8]} /><meshBasicMaterial color="#00efff" depthTest={false} />
           </mesh>}
           <CamryCameraRig bounds={bounds} request={request} activeView={view} onManualChange={onManualChange} />
+          {compare && <CamryDiagnostics enabled={compare} ready={status.kind === 'ready'} startedAt={loadMetrics?.startedAt ?? null}
+            onFrame={onFrame} onFirstFrame={onFirstFrame} />}
         </Canvas>
         {debug && <div className="camry-anchor-readout" role="status">Anchor inspector: select the front/rear fascia or trunk. Wire boxes are guides only.{inspection && <div>{inspection.part}: point {inspection.point.map((value) => value.toFixed(4)).join(', ')}; normal {inspection.normal.map((value) => value.toFixed(3)).join(', ')}</div>}</div>}
         {status.kind !== 'ready' && <div className="viewer-overlay" role={status.kind === 'error' ? 'alert' : 'status'}>
@@ -356,6 +425,26 @@ export default function CamryScene({ config = DEFAULT_CONFIG, embedded = false }
           onClick={() => { setView(item.id); setRequest((previous) => ({ view: item.id, sequence: previous.sequence + 1 })) }}>{item.label}</button>)}
       </div>
       <p className="note">Иштеп чыгуудагы сахна. Camry конфигурациясы жана жалпы тандоо азырынча жеткиликтүү эмес.</p>
+      {compare && <section className="camry-comparison" aria-label="Camry model comparison">
+        <div className="camry-comparison-switch" role="group" aria-label="GLB version">
+          <button type="button" aria-pressed={variant === 'current'} onClick={() => switchVariant('current')}>Current WheelLOD</button>
+          <button type="button" aria-pressed={variant === 'candidate'} onClick={() => switchVariant('candidate')}>WebCandidate v3</button>
+        </div>
+        <div className="camry-comparison-metrics" aria-live="polite">
+          <span>GLB body bytes: {loadMetrics?.bytes.toLocaleString() ?? '—'}</span>
+          <span>Network transfer bytes: {loadMetrics?.transferBytes?.toLocaleString() ?? 'unavailable'}</span>
+          <span>Fetch + body: {loadMetrics ? `${loadMetrics.fetchMs.toFixed(1)} ms` : '—'}</span>
+          <span>Parse: {loadMetrics ? `${loadMetrics.parseMs.toFixed(1)} ms` : '—'}</span>
+          <span>CPU ready: {loadMetrics ? `${loadMetrics.readyMs.toFixed(1)} ms` : '—'}</span>
+          <span>First frame callback: {firstFrameMs === null ? '—' : `${firstFrameMs.toFixed(1)} ms`}</span>
+          <span>Model triangles: {loadMetrics?.triangles.toLocaleString() ?? '—'}</span>
+          <span>Draw calls: {frameMetrics?.drawCalls ?? '—'}</span>
+          <span>Frame: {frameMetrics ? `${frameMetrics.frameMs.toFixed(1)} ms` : '—'}</span>
+          <span>Approx. FPS: {frameMetrics ? frameMetrics.fps.toFixed(1) : '—'}</span>
+          <span>Renderer geometry / textures: {frameMetrics ? `${frameMetrics.geometries} / ${frameMetrics.textures}` : '—'}</span>
+        </div>
+        <p>Development diagnostics run continuous frames. Fetch includes response body transfer and may use browser cache; transfer bytes include headers and can be zero for cache. Draw calls are from the previous frame; FPS is an approximate 30-frame average. Renderer memory shows resource counts, not GPU bytes.</p>
+      </section>}
     </main>
     <footer className="footer"><span>FORM / AUTOMOTIVE</span><span>“Toyota Camry 2018” by {vehicle.license.author}, <a href={vehicle.license.sourceUrl} target="_blank" rel="noreferrer">Sketchfab</a> · <a href={vehicle.license.termsUrl} target="_blank" rel="noreferrer">CC BY 4.0</a> · Wheel LOD прототиби өзгөртүлгөн.</span></footer>
   </div>

@@ -16,7 +16,7 @@ export default function VehicleSelector({ activeVehicleId, onSelect }: {
             aria-describedby={!available ? `${vehicle.id}-status` : undefined}
             onClick={() => { if (available) onSelect(vehicle.id) }}>
             <div>
-              <span className="model-badge">{vehicle.id === 'concept-gt' ? 'CONCEPT 01' : 'CAMRY 2018'}</span>
+              <span className="model-badge">{vehicle.id === 'concept-gt' ? 'CONCEPT 01' : vehicle.id === 'toyota-camry-2018' ? 'CAMRY 2018' : 'BMW M5 F90'}</span>
               <strong>{vehicle.displayName}</strong>
               <small id={!available ? `${vehicle.id}-status` : undefined}>
                 {vehicle.id === 'concept-gt' ? 'Electric concept' : available ? 'Limited tuning · large model' : 'In Development'}

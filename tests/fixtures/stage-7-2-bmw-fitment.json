@@ -1,0 +1,3392 @@
+{
+  "asset": "public\\models\\candidates\\bmw-m5-f90\\bmw_m5_f90.glb",
+  "assetSha256": "87fa667a173f3cc13a3f7375bfa2ce64be7d6c22aa886dc0b83de099b09b6c59",
+  "coordinateSystem": "Blender: X forward, Y left, Z up",
+  "nodes": {
+    "tire": {
+      "name": "f_bmw_f90_m5_130_EXT_Tyre_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "EXT_Tyre"
+      ],
+      "vertexCount": 19296,
+      "polygonCount": 6432,
+      "cornerFaces": {
+        "frontLeft": {
+          "triangles": 1608,
+          "outwardNormalRange": [
+            -0.9954113364219666,
+            0.9988465309143066
+          ]
+        },
+        "frontRight": {
+          "triangles": 1608,
+          "outwardNormalRange": [
+            -0.9988465309143066,
+            0.9954113364219666
+          ]
+        },
+        "rearLeft": {
+          "triangles": 1608,
+          "outwardNormalRange": [
+            -0.9966343641281128,
+            0.9994169473648071
+          ]
+        },
+        "rearRight": {
+          "triangles": 1608,
+          "outwardNormalRange": [
+            -0.9994169473648071,
+            0.9966344237327576
+          ]
+        }
+      },
+      "crossingPolygons": 0,
+      "connectedComponents": {
+        "frontLeft": [
+          1608
+        ],
+        "frontRight": [
+          1608
+        ],
+        "rearLeft": [
+          1608
+        ],
+        "rearRight": [
+          1608
+        ]
+      },
+      "crossCornerComponents": 0
+    },
+    "rimBadge": {
+      "name": "f_bmw_f90_m5_131_M_RimBadge_Max_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "M_Rim_Main_Max"
+      ],
+      "vertexCount": 1404,
+      "polygonCount": 468,
+      "cornerFaces": {
+        "frontLeft": {
+          "triangles": 117,
+          "outwardNormalRange": [
+            -0.3025955557823181,
+            0.9991385340690613
+          ]
+        },
+        "frontRight": {
+          "triangles": 117,
+          "outwardNormalRange": [
+            -0.30258089303970337,
+            0.9991385340690613
+          ]
+        },
+        "rearLeft": {
+          "triangles": 117,
+          "outwardNormalRange": [
+            -0.31536364555358887,
+            0.999605119228363
+          ]
+        },
+        "rearRight": {
+          "triangles": 117,
+          "outwardNormalRange": [
+            -0.3153558373451233,
+            0.999605119228363
+          ]
+        }
+      },
+      "crossingPolygons": 0,
+      "connectedComponents": {
+        "frontLeft": [
+          36,
+          23,
+          22,
+          20,
+          16
+        ],
+        "frontRight": [
+          36,
+          23,
+          22,
+          20,
+          16
+        ],
+        "rearLeft": [
+          36,
+          23,
+          22,
+          20,
+          16
+        ],
+        "rearRight": [
+          36,
+          23,
+          22,
+          20,
+          16
+        ]
+      },
+      "crossCornerComponents": 0
+    },
+    "auxiliaryRim": {
+      "name": "f_bmw_f90_m5_132_M_Rim_Secondary_Max_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "M_Rim_Main_Max"
+      ],
+      "vertexCount": 840,
+      "polygonCount": 280,
+      "cornerFaces": {
+        "frontLeft": {
+          "triangles": 70,
+          "outwardNormalRange": [
+            0.9904755353927612,
+            0.9998477101325989
+          ]
+        },
+        "frontRight": {
+          "triangles": 70,
+          "outwardNormalRange": [
+            0.9904764890670776,
+            0.9998478293418884
+          ]
+        },
+        "rearLeft": {
+          "triangles": 70,
+          "outwardNormalRange": [
+            0.9885299801826477,
+            0.9995067119598389
+          ]
+        },
+        "rearRight": {
+          "triangles": 70,
+          "outwardNormalRange": [
+            0.9885307550430298,
+            0.9995067119598389
+          ]
+        }
+      },
+      "crossingPolygons": 0,
+      "connectedComponents": {
+        "frontLeft": [
+          60,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "frontRight": [
+          60,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "rearLeft": [
+          60,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "rearRight": [
+          60,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "crossCornerComponents": 0
+    },
+    "mainRim": {
+      "name": "f_bmw_f90_m5_133_M_Rim_Main_Max_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "M_Rim_Main_Max_0"
+      ],
+      "vertexCount": 25559,
+      "polygonCount": 8520,
+      "cornerFaces": {
+        "frontLeft": {
+          "triangles": 2130,
+          "outwardNormalRange": [
+            -0.9998477697372437,
+            0.999975860118866
+          ]
+        },
+        "frontRight": {
+          "triangles": 2130,
+          "outwardNormalRange": [
+            -0.9998478293418884,
+            0.999975860118866
+          ]
+        },
+        "rearLeft": {
+          "triangles": 2130,
+          "outwardNormalRange": [
+            -0.9995067119598389,
+            0.9999972581863403
+          ]
+        },
+        "rearRight": {
+          "triangles": 2130,
+          "outwardNormalRange": [
+            -0.9995067119598389,
+            0.9999972581863403
+          ]
+        }
+      },
+      "crossingPolygons": 0,
+      "connectedComponents": {
+        "frontLeft": [
+          1770,
+          360
+        ],
+        "frontRight": [
+          1770,
+          360
+        ],
+        "rearLeft": [
+          1770,
+          360
+        ],
+        "rearRight": [
+          1770,
+          360
+        ]
+      },
+      "crossCornerComponents": 0
+    },
+    "rimNoTint": {
+      "name": "f_bmw_f90_m5_134_M_Rim_NoTint_Max_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "sticker_0"
+      ],
+      "vertexCount": 1920,
+      "polygonCount": 640,
+      "cornerFaces": {
+        "frontLeft": {
+          "triangles": 160,
+          "outwardNormalRange": [
+            0.05280387029051781,
+            0.9999174475669861
+          ]
+        },
+        "frontRight": {
+          "triangles": 160,
+          "outwardNormalRange": [
+            0.05281294137239456,
+            0.9999174475669861
+          ]
+        },
+        "rearLeft": {
+          "triangles": 160,
+          "outwardNormalRange": [
+            0.03892625868320465,
+            0.9996405243873596
+          ]
+        },
+        "rearRight": {
+          "triangles": 160,
+          "outwardNormalRange": [
+            0.03893277049064636,
+            0.999640941619873
+          ]
+        }
+      },
+      "crossingPolygons": 0,
+      "connectedComponents": {
+        "frontLeft": [
+          28,
+          28,
+          28,
+          28,
+          28,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "frontRight": [
+          28,
+          28,
+          28,
+          28,
+          28,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "rearLeft": [
+          28,
+          28,
+          28,
+          28,
+          28,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "rearRight": [
+          28,
+          28,
+          28,
+          28,
+          28,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "crossCornerComponents": 0
+    },
+    "rimAccent": {
+      "name": "f_bmw_f90_m5_135_rimsiulver_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "M_Rim_Main_Max_0"
+      ],
+      "vertexCount": 2340,
+      "polygonCount": 780,
+      "cornerFaces": {
+        "frontLeft": {
+          "triangles": 390,
+          "outwardNormalRange": [
+            0.9962311387062073,
+            0.9962408542633057
+          ]
+        },
+        "frontRight": {
+          "triangles": 130,
+          "outwardNormalRange": [
+            0.9958813786506653,
+            0.9965688586235046
+          ]
+        },
+        "rearLeft": {
+          "triangles": 130,
+          "outwardNormalRange": [
+            0.9971455335617065,
+            0.997147798538208
+          ]
+        },
+        "rearRight": {
+          "triangles": 130,
+          "outwardNormalRange": [
+            0.9970101714134216,
+            0.9972792863845825
+          ]
+        }
+      },
+      "crossingPolygons": 0,
+      "connectedComponents": {
+        "frontLeft": [
+          390
+        ],
+        "frontRight": [
+          130
+        ],
+        "rearLeft": [
+          130
+        ],
+        "rearRight": [
+          130
+        ]
+      },
+      "crossCornerComponents": 0
+    },
+    "rimBlurred": {
+      "name": "f_bmw_f90_m5_137_Rim_Blurred_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "Rim_Blurred_0"
+      ],
+      "vertexCount": 14833,
+      "polygonCount": 4960,
+      "cornerFaces": {
+        "frontLeft": {
+          "triangles": 1240,
+          "outwardNormalRange": [
+            -1.0,
+            0.9985133409500122
+          ]
+        },
+        "frontRight": {
+          "triangles": 1240,
+          "outwardNormalRange": [
+            -0.999993085861206,
+            0.9986215829849243
+          ]
+        },
+        "rearLeft": {
+          "triangles": 1240,
+          "outwardNormalRange": [
+            -1.0,
+            0.9941855072975159
+          ]
+        },
+        "rearRight": {
+          "triangles": 1240,
+          "outwardNormalRange": [
+            -0.9999985098838806,
+            0.9940260052680969
+          ]
+        }
+      },
+      "crossingPolygons": 0,
+      "connectedComponents": {
+        "frontLeft": [
+          960,
+          200,
+          40,
+          40
+        ],
+        "frontRight": [
+          960,
+          200,
+          40,
+          40
+        ],
+        "rearLeft": [
+          960,
+          280
+        ],
+        "rearRight": [
+          960,
+          280
+        ]
+      },
+      "crossCornerComponents": 0
+    },
+    "frontCaliper": {
+      "name": "f_bmw_f90_m5_041_Brake_Caliper_001_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "Brake_Caliper_001"
+      ],
+      "vertexCount": 1392,
+      "polygonCount": 464
+    },
+    "rearDisk": {
+      "name": "f_bmw_f90_m5_044_Brake_Disk_rear_001_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "Brake_Disk_rear_001"
+      ],
+      "vertexCount": 1944,
+      "polygonCount": 648
+    },
+    "frontDisk": {
+      "name": "f_bmw_f90_m5_045_Brake_Disk_001_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "Brake_Disk_001"
+      ],
+      "vertexCount": 1944,
+      "polygonCount": 648
+    },
+    "bodyPaint": {
+      "name": "f_bmw_f90_m5_119_Carpaint_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "Carpaint"
+      ],
+      "vertexCount": 53298,
+      "polygonCount": 17766
+    },
+    "bodyBase": {
+      "name": "f_bmw_f90_m5_002_15___Default_0.001",
+      "matrixWorld": [
+        [
+          -0.0,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "materialNames": [
+        "5___Default"
+      ],
+      "vertexCount": 48438,
+      "polygonCount": 16146
+    }
+  },
+  "wheels": {
+    "frontLeft": {
+      "center": [
+        1.588817,
+        0.773968,
+        0.377049
+      ],
+      "outwardAxis": [
+        0,
+        1,
+        0
+      ],
+      "parts": {
+        "tire": {
+          "vertexCount": 4824,
+          "boundsXYZ": [
+            [
+              1.242749,
+              1.934885
+            ],
+            [
+              0.623337,
+              0.9246
+            ],
+            [
+              0.0299,
+              0.724197
+            ]
+          ],
+          "radiusRange": [
+            0.268701,
+            0.347153
+          ],
+          "outwardDepthRange": [
+            0.623337,
+            0.9246
+          ],
+          "outwardFaceToCenter": 0.150632
+        },
+        "rimBadge": {
+          "vertexCount": 351,
+          "boundsXYZ": [
+            [
+              1.499567,
+              1.67963
+            ],
+            [
+              0.847224,
+              0.909459
+            ],
+            [
+              0.119544,
+              0.47106
+            ]
+          ],
+          "radiusRange": [
+            0.001821,
+            0.257508
+          ],
+          "outwardDepthRange": [
+            0.847224,
+            0.909459
+          ],
+          "outwardFaceToCenter": 0.13549
+        },
+        "auxiliaryRim": {
+          "vertexCount": 210,
+          "boundsXYZ": [
+            [
+              1.307488,
+              1.87019
+            ],
+            [
+              0.807329,
+              0.924644
+            ],
+            [
+              0.097388,
+              0.662793
+            ]
+          ],
+          "radiusRange": [
+            0.033181,
+            0.285748
+          ],
+          "outwardDepthRange": [
+            0.807329,
+            0.924644
+          ],
+          "outwardFaceToCenter": 0.150676
+        },
+        "mainRim": {
+          "vertexCount": 6390,
+          "boundsXYZ": [
+            [
+              1.307488,
+              1.87019
+            ],
+            [
+              0.627722,
+              0.924644
+            ],
+            [
+              0.092465,
+              0.662793
+            ]
+          ],
+          "radiusRange": [
+            0.001641,
+            0.285748
+          ],
+          "outwardDepthRange": [
+            0.627722,
+            0.924644
+          ],
+          "outwardFaceToCenter": 0.150676
+        },
+        "rimNoTint": {
+          "vertexCount": 480,
+          "boundsXYZ": [
+            [
+              1.523707,
+              1.653818
+            ],
+            [
+              0.829614,
+              0.839539
+            ],
+            [
+              0.321837,
+              0.446932
+            ]
+          ],
+          "radiusRange": [
+            0.046593,
+            0.069884
+          ],
+          "outwardDepthRange": [
+            0.829614,
+            0.839539
+          ],
+          "outwardFaceToCenter": 0.06557
+        },
+        "rimAccent": {
+          "vertexCount": 1170,
+          "boundsXYZ": [
+            [
+              1.322341,
+              1.855083
+            ],
+            [
+              0.901534,
+              0.902312
+            ],
+            [
+              0.111277,
+              0.644021
+            ]
+          ],
+          "radiusRange": [
+            0.256833,
+            0.267003
+          ],
+          "outwardDepthRange": [
+            0.901534,
+            0.902312
+          ],
+          "outwardFaceToCenter": 0.128344
+        },
+        "rimBlurred": {
+          "vertexCount": 3700,
+          "boundsXYZ": [
+            [
+              1.309365,
+              1.868311
+            ],
+            [
+              0.63541,
+              0.901599
+            ],
+            [
+              0.098155,
+              0.657101
+            ]
+          ],
+          "radiusRange": [
+            0.027642,
+            0.280179
+          ],
+          "outwardDepthRange": [
+            0.63541,
+            0.901599
+          ],
+          "outwardFaceToCenter": 0.12763
+        },
+        "frontCaliper": {
+          "vertexCount": 420,
+          "boundsXYZ": [
+            [
+              1.358345,
+              1.48912
+            ],
+            [
+              0.634677,
+              0.818874
+            ],
+            [
+              0.18074,
+              0.534749
+            ]
+          ],
+          "radiusRange": [
+            0.12123,
+            0.233652
+          ],
+          "outwardDepthRange": [
+            0.634677,
+            0.818874
+          ],
+          "outwardFaceToCenter": 0.044906
+        },
+        "rearDisk": null,
+        "frontDisk": {
+          "vertexCount": 972,
+          "boundsXYZ": [
+            [
+              1.387814,
+              1.789811
+            ],
+            [
+              0.719591,
+              0.771672
+            ],
+            [
+              0.175609,
+              0.578014
+            ]
+          ],
+          "radiusRange": [
+            6e-06,
+            0.201621
+          ],
+          "outwardDepthRange": [
+            0.719591,
+            0.771672
+          ],
+          "outwardFaceToCenter": -0.002296
+        },
+        "bodyPaint": {
+          "vertexCount": 10869,
+          "boundsXYZ": [
+            [
+              6e-06,
+              2.448738
+            ],
+            [
+              0.000206,
+              0.915217
+            ],
+            [
+              0.167092,
+              1.418513
+            ]
+          ],
+          "radiusRange": [
+            0.353615,
+            1.891637
+          ],
+          "outwardDepthRange": [
+            0.000206,
+            0.915217
+          ],
+          "outwardFaceToCenter": 0.141248
+        },
+        "bodyBase": {
+          "vertexCount": 9116,
+          "boundsXYZ": [
+            [
+              0.286939,
+              2.342908
+            ],
+            [
+              9.8e-05,
+              0.910567
+            ],
+            [
+              0.167092,
+              1.361448
+            ]
+          ],
+          "radiusRange": [
+            0.340346,
+            1.619124
+          ],
+          "outwardDepthRange": [
+            9.8e-05,
+            0.910567
+          ],
+          "outwardFaceToCenter": 0.136599
+        }
+      },
+      "tireInnerMinusRimOuter": -0.017047,
+      "sourceCenterCapRegion": {
+        "vertexCount": 56,
+        "centerXYZ": [
+          1.589039,
+          0.84873,
+          0.376227
+        ],
+        "outwardDepthRange": [
+          0.847258,
+          0.850109
+        ]
+      },
+      "replacementProbes": {
+        "doubleSpoke": {
+          "radialScale": 0.955679,
+          "depthScale": 1.290965,
+          "targetRadius": 0.285748,
+          "targetOutwardDepthRange": [
+            0.627722,
+            0.924644
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 198,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            0.98,
+            0.82
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              198
+            ],
+            [
+              1,
+              0.97,
+              206
+            ],
+            [
+              1,
+              0.94,
+              192
+            ],
+            [
+              1,
+              0.9,
+              194
+            ],
+            [
+              1,
+              0.86,
+              134
+            ],
+            [
+              1,
+              0.82,
+              62
+            ],
+            [
+              0.99,
+              1,
+              196
+            ],
+            [
+              0.99,
+              0.97,
+              194
+            ],
+            [
+              0.99,
+              0.94,
+              194
+            ],
+            [
+              0.99,
+              0.9,
+              200
+            ],
+            [
+              0.99,
+              0.86,
+              152
+            ],
+            [
+              0.99,
+              0.82,
+              31
+            ],
+            [
+              0.98,
+              1,
+              202
+            ],
+            [
+              0.98,
+              0.97,
+              194
+            ],
+            [
+              0.98,
+              0.94,
+              194
+            ],
+            [
+              0.98,
+              0.9,
+              194
+            ],
+            [
+              0.98,
+              0.86,
+              127
+            ],
+            [
+              0.98,
+              0.82,
+              0
+            ]
+          ]
+        },
+        "ySpoke": {
+          "radialScale": 0.955679,
+          "depthScale": 1.290965,
+          "targetRadius": 0.285748,
+          "targetOutwardDepthRange": [
+            0.627722,
+            0.924644
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 268,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            0.98,
+            0.82
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              268
+            ],
+            [
+              1,
+              0.97,
+              264
+            ],
+            [
+              1,
+              0.94,
+              223
+            ],
+            [
+              1,
+              0.9,
+              198
+            ],
+            [
+              1,
+              0.86,
+              134
+            ],
+            [
+              1,
+              0.82,
+              62
+            ],
+            [
+              0.99,
+              1,
+              226
+            ],
+            [
+              0.99,
+              0.97,
+              222
+            ],
+            [
+              0.99,
+              0.94,
+              203
+            ],
+            [
+              0.99,
+              0.9,
+              200
+            ],
+            [
+              0.99,
+              0.86,
+              152
+            ],
+            [
+              0.99,
+              0.82,
+              31
+            ],
+            [
+              0.98,
+              1,
+              206
+            ],
+            [
+              0.98,
+              0.97,
+              196
+            ],
+            [
+              0.98,
+              0.94,
+              194
+            ],
+            [
+              0.98,
+              0.9,
+              194
+            ],
+            [
+              0.98,
+              0.86,
+              127
+            ],
+            [
+              0.98,
+              0.82,
+              0
+            ]
+          ]
+        },
+        "deepConcave": {
+          "radialScale": 0.955679,
+          "depthScale": 1.290965,
+          "targetRadius": 0.285748,
+          "targetOutwardDepthRange": [
+            0.627722,
+            0.924644
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 206,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            0.98,
+            0.82
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              206
+            ],
+            [
+              1,
+              0.97,
+              214
+            ],
+            [
+              1,
+              0.94,
+              207
+            ],
+            [
+              1,
+              0.9,
+              194
+            ],
+            [
+              1,
+              0.86,
+              134
+            ],
+            [
+              1,
+              0.82,
+              62
+            ],
+            [
+              0.99,
+              1,
+              196
+            ],
+            [
+              0.99,
+              0.97,
+              194
+            ],
+            [
+              0.99,
+              0.94,
+              194
+            ],
+            [
+              0.99,
+              0.9,
+              200
+            ],
+            [
+              0.99,
+              0.86,
+              152
+            ],
+            [
+              0.99,
+              0.82,
+              31
+            ],
+            [
+              0.98,
+              1,
+              202
+            ],
+            [
+              0.98,
+              0.97,
+              194
+            ],
+            [
+              0.98,
+              0.94,
+              194
+            ],
+            [
+              0.98,
+              0.9,
+              194
+            ],
+            [
+              0.98,
+              0.86,
+              127
+            ],
+            [
+              0.98,
+              0.82,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    "frontRight": {
+      "center": [
+        1.588707,
+        -0.834543,
+        0.379622
+      ],
+      "outwardAxis": [
+        0,
+        -1,
+        0
+      ],
+      "parts": {
+        "tire": {
+          "vertexCount": 4824,
+          "boundsXYZ": [
+            [
+              1.242639,
+              1.934775
+            ],
+            [
+              -0.985175,
+              -0.683911
+            ],
+            [
+              0.032473,
+              0.72677
+            ]
+          ],
+          "radiusRange": [
+            0.268701,
+            0.347153
+          ],
+          "outwardDepthRange": [
+            0.683911,
+            0.985175
+          ],
+          "outwardFaceToCenter": 0.150632
+        },
+        "rimBadge": {
+          "vertexCount": 351,
+          "boundsXYZ": [
+            [
+              1.497789,
+              1.678195
+            ],
+            [
+              -0.97031,
+              -0.908075
+            ],
+            [
+              0.121122,
+              0.472638
+            ]
+          ],
+          "radiusRange": [
+            0.000826,
+            0.258503
+          ],
+          "outwardDepthRange": [
+            0.908075,
+            0.97031
+          ],
+          "outwardFaceToCenter": 0.135767
+        },
+        "auxiliaryRim": {
+          "vertexCount": 210,
+          "boundsXYZ": [
+            [
+              1.30735,
+              1.870053
+            ],
+            [
+              -0.985496,
+              -0.868181
+            ],
+            [
+              0.098966,
+              0.664371
+            ]
+          ],
+          "radiusRange": [
+            0.034,
+            0.284753
+          ],
+          "outwardDepthRange": [
+            0.868181,
+            0.985496
+          ],
+          "outwardFaceToCenter": 0.150953
+        },
+        "mainRim": {
+          "vertexCount": 6390,
+          "boundsXYZ": [
+            [
+              1.30735,
+              1.870053
+            ],
+            [
+              -0.985496,
+              -0.688574
+            ],
+            [
+              0.094043,
+              0.664371
+            ]
+          ],
+          "radiusRange": [
+            0.000685,
+            0.285582
+          ],
+          "outwardDepthRange": [
+            0.688574,
+            0.985496
+          ],
+          "outwardFaceToCenter": 0.150953
+        },
+        "rimNoTint": {
+          "vertexCount": 480,
+          "boundsXYZ": [
+            [
+              1.523518,
+              1.653628
+            ],
+            [
+              -0.90039,
+              -0.890466
+            ],
+            [
+              0.323691,
+              0.448509
+            ]
+          ],
+          "radiusRange": [
+            0.047417,
+            0.068889
+          ],
+          "outwardDepthRange": [
+            0.890466,
+            0.90039
+          ],
+          "outwardFaceToCenter": 0.065847
+        },
+        "rimAccent": {
+          "vertexCount": 390,
+          "boundsXYZ": [
+            [
+              1.321679,
+              1.854721
+            ],
+            [
+              -0.972101,
+              -0.969248
+            ],
+            [
+              0.112761,
+              0.645652
+            ]
+          ],
+          "radiusRange": [
+            0.257091,
+            0.26717
+          ],
+          "outwardDepthRange": [
+            0.969248,
+            0.972101
+          ],
+          "outwardFaceToCenter": 0.137558
+        },
+        "rimBlurred": {
+          "vertexCount": 3720,
+          "boundsXYZ": [
+            [
+              1.309603,
+              1.868798
+            ],
+            [
+              -0.971126,
+              -0.702896
+            ],
+            [
+              0.099607,
+              0.658806
+            ]
+          ],
+          "radiusRange": [
+            0.027837,
+            0.280243
+          ],
+          "outwardDepthRange": [
+            0.702896,
+            0.971126
+          ],
+          "outwardFaceToCenter": 0.136583
+        },
+        "frontCaliper": {
+          "vertexCount": 420,
+          "boundsXYZ": [
+            [
+              1.358298,
+              1.489202
+            ],
+            [
+              -0.888869,
+              -0.704672
+            ],
+            [
+              0.181055,
+              0.535049
+            ]
+          ],
+          "radiusRange": [
+            0.121479,
+            0.235448
+          ],
+          "outwardDepthRange": [
+            0.704672,
+            0.888869
+          ],
+          "outwardFaceToCenter": 0.054326
+        },
+        "rearDisk": null,
+        "frontDisk": {
+          "vertexCount": 972,
+          "boundsXYZ": [
+            [
+              1.387814,
+              1.789811
+            ],
+            [
+              -0.841672,
+              -0.789591
+            ],
+            [
+              0.175609,
+              0.578013
+            ]
+          ],
+          "radiusRange": [
+            0.002231,
+            0.204079
+          ],
+          "outwardDepthRange": [
+            0.789591,
+            0.841672
+          ],
+          "outwardFaceToCenter": 0.007129
+        },
+        "bodyPaint": {
+          "vertexCount": 11224,
+          "boundsXYZ": [
+            [
+              0.000197,
+              2.451186
+            ],
+            [
+              -0.980181,
+              -0.000488
+            ],
+            [
+              0.173608,
+              1.422351
+            ]
+          ],
+          "radiusRange": [
+            0.357109,
+            1.892865
+          ],
+          "outwardDepthRange": [
+            0.000488,
+            0.980181
+          ],
+          "outwardFaceToCenter": 0.145638
+        },
+        "bodyBase": {
+          "vertexCount": 12259,
+          "boundsXYZ": [
+            [
+              0.286263,
+              2.374491
+            ],
+            [
+              -0.977626,
+              -3.8e-05
+            ],
+            [
+              0.172652,
+              1.362552
+            ]
+          ],
+          "radiusRange": [
+            0.340884,
+            1.620112
+          ],
+          "outwardDepthRange": [
+            3.8e-05,
+            0.977626
+          ],
+          "outwardFaceToCenter": 0.143083
+        }
+      },
+      "tireInnerMinusRimOuter": -0.016881,
+      "sourceCenterCapRegion": {
+        "vertexCount": 60,
+        "centerXYZ": [
+          1.588935,
+          -0.909482,
+          0.380475
+        ],
+        "outwardDepthRange": [
+          0.908075,
+          0.910961
+        ]
+      },
+      "replacementProbes": {
+        "doubleSpoke": {
+          "radialScale": 0.955124,
+          "depthScale": 1.290965,
+          "targetRadius": 0.285582,
+          "targetOutwardDepthRange": [
+            0.688574,
+            0.985496
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 170,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            1,
+            0.86
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              170
+            ],
+            [
+              1,
+              0.97,
+              199
+            ],
+            [
+              1,
+              0.94,
+              122
+            ],
+            [
+              1,
+              0.9,
+              50
+            ],
+            [
+              1,
+              0.86,
+              0
+            ]
+          ]
+        },
+        "ySpoke": {
+          "radialScale": 0.955124,
+          "depthScale": 1.290965,
+          "targetRadius": 0.285582,
+          "targetOutwardDepthRange": [
+            0.688574,
+            0.985496
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 176,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            1,
+            0.86
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              176
+            ],
+            [
+              1,
+              0.97,
+              199
+            ],
+            [
+              1,
+              0.94,
+              122
+            ],
+            [
+              1,
+              0.9,
+              50
+            ],
+            [
+              1,
+              0.86,
+              0
+            ]
+          ]
+        },
+        "deepConcave": {
+          "radialScale": 0.955124,
+          "depthScale": 1.290965,
+          "targetRadius": 0.285582,
+          "targetOutwardDepthRange": [
+            0.688574,
+            0.985496
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 178,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            1,
+            0.86
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              178
+            ],
+            [
+              1,
+              0.97,
+              199
+            ],
+            [
+              1,
+              0.94,
+              122
+            ],
+            [
+              1,
+              0.9,
+              50
+            ],
+            [
+              1,
+              0.86,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    "rearLeft": {
+      "center": [
+        -1.381135,
+        0.755323,
+        0.369325
+      ],
+      "outwardAxis": [
+        0,
+        1,
+        0
+      ],
+      "parts": {
+        "tire": {
+          "vertexCount": 4824,
+          "boundsXYZ": [
+            [
+              -1.727203,
+              -1.035066
+            ],
+            [
+              0.600549,
+              0.910098
+            ],
+            [
+              0.021027,
+              0.717622
+            ]
+          ],
+          "radiusRange": [
+            0.2667,
+            0.348302
+          ],
+          "outwardDepthRange": [
+            0.600549,
+            0.910098
+          ],
+          "outwardFaceToCenter": 0.154774
+        },
+        "rimBadge": {
+          "vertexCount": 351,
+          "boundsXYZ": [
+            [
+              -1.470443,
+              -1.290379
+            ],
+            [
+              0.827694,
+              0.893985
+            ],
+            [
+              0.113513,
+              0.464749
+            ]
+          ],
+          "radiusRange": [
+            0.002912,
+            0.255815
+          ],
+          "outwardDepthRange": [
+            0.827694,
+            0.893985
+          ],
+          "outwardFaceToCenter": 0.138662
+        },
+        "auxiliaryRim": {
+          "vertexCount": 210,
+          "boundsXYZ": [
+            [
+              -1.662526,
+              -1.099823
+            ],
+            [
+              0.787204,
+              0.909572
+            ],
+            [
+              0.091823,
+              0.657035
+            ]
+          ],
+          "radiusRange": [
+            0.032781,
+            0.287714
+          ],
+          "outwardDepthRange": [
+            0.787204,
+            0.909572
+          ],
+          "outwardFaceToCenter": 0.154249
+        },
+        "mainRim": {
+          "vertexCount": 6389,
+          "boundsXYZ": [
+            [
+              -1.662526,
+              -1.099823
+            ],
+            [
+              0.604856,
+              0.909572
+            ],
+            [
+              0.082893,
+              0.657035
+            ]
+          ],
+          "radiusRange": [
+            0.002707,
+            0.287714
+          ],
+          "outwardDepthRange": [
+            0.604856,
+            0.909572
+          ],
+          "outwardFaceToCenter": 0.154249
+        },
+        "rimNoTint": {
+          "vertexCount": 480,
+          "boundsXYZ": [
+            [
+              -1.4463,
+              -1.316188
+            ],
+            [
+              0.809671,
+              0.821297
+            ],
+            [
+              0.314955,
+              0.440006
+            ]
+          ],
+          "radiusRange": [
+            0.045957,
+            0.070682
+          ],
+          "outwardDepthRange": [
+            0.809671,
+            0.821297
+          ],
+          "outwardFaceToCenter": 0.065973
+        },
+        "rimAccent": {
+          "vertexCount": 390,
+          "boundsXYZ": [
+            [
+              -1.6474,
+              -1.114737
+            ],
+            [
+              0.885911,
+              0.886657
+            ],
+            [
+              0.102323,
+              0.635021
+            ]
+          ],
+          "radiusRange": [
+            0.255991,
+            0.267031
+          ],
+          "outwardDepthRange": [
+            0.885911,
+            0.886657
+          ],
+          "outwardFaceToCenter": 0.131334
+        },
+        "rimBlurred": {
+          "vertexCount": 3693,
+          "boundsXYZ": [
+            [
+              -1.660283,
+              -1.102197
+            ],
+            [
+              0.606377,
+              0.887166
+            ],
+            [
+              0.090918,
+              0.649004
+            ]
+          ],
+          "radiusRange": [
+            0.027611,
+            0.280244
+          ],
+          "outwardDepthRange": [
+            0.606377,
+            0.887166
+          ],
+          "outwardFaceToCenter": 0.131843
+        },
+        "frontCaliper": {
+          "vertexCount": 276,
+          "boundsXYZ": [
+            [
+              -1.601876,
+              -1.478292
+            ],
+            [
+              0.655511,
+              0.818233
+            ],
+            [
+              0.290334,
+              0.551879
+            ]
+          ],
+          "radiusRange": [
+            0.130886,
+            0.220908
+          ],
+          "outwardDepthRange": [
+            0.655511,
+            0.818233
+          ],
+          "outwardFaceToCenter": 0.062909
+        },
+        "rearDisk": {
+          "vertexCount": 972,
+          "boundsXYZ": [
+            [
+              -1.577174,
+              -1.185175
+            ],
+            [
+              0.7196,
+              0.792141
+            ],
+            [
+              0.16999,
+              0.562765
+            ]
+          ],
+          "radiusRange": [
+            0.001456,
+            0.199337
+          ],
+          "outwardDepthRange": [
+            0.7196,
+            0.792141
+          ],
+          "outwardFaceToCenter": 0.036818
+        },
+        "frontDisk": null,
+        "bodyPaint": {
+          "vertexCount": 15287,
+          "boundsXYZ": [
+            [
+              -2.500956,
+              -0.00035
+            ],
+            [
+              0.000632,
+              0.899334
+            ],
+            [
+              0.198691,
+              1.45365
+            ]
+          ],
+          "radiusRange": [
+            0.359991,
+            1.716659
+          ],
+          "outwardDepthRange": [
+            0.000632,
+            0.899334
+          ],
+          "outwardFaceToCenter": 0.14401
+        },
+        "bodyBase": {
+          "vertexCount": 10490,
+          "boundsXYZ": [
+            [
+              -2.475296,
+              -0.91166
+            ],
+            [
+              0.000264,
+              0.893857
+            ],
+            [
+              0.206423,
+              1.384991
+            ]
+          ],
+          "radiusRange": [
+            0.233489,
+            1.155601
+          ],
+          "outwardDepthRange": [
+            0.000264,
+            0.893857
+          ],
+          "outwardFaceToCenter": 0.138534
+        }
+      },
+      "tireInnerMinusRimOuter": -0.021014,
+      "sourceCenterCapRegion": {
+        "vertexCount": 48,
+        "centerXYZ": [
+          -1.380101,
+          0.830076,
+          0.364097
+        ],
+        "outwardDepthRange": [
+          0.828198,
+          0.831114
+        ]
+      },
+      "replacementProbes": {
+        "doubleSpoke": {
+          "radialScale": 0.962254,
+          "depthScale": 1.324852,
+          "targetRadius": 0.287714,
+          "targetOutwardDepthRange": [
+            0.604856,
+            0.909572
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 276,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            0.96,
+            0.82
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              276
+            ],
+            [
+              1,
+              0.97,
+              229
+            ],
+            [
+              1,
+              0.94,
+              212
+            ],
+            [
+              1,
+              0.9,
+              200
+            ],
+            [
+              1,
+              0.86,
+              129
+            ],
+            [
+              1,
+              0.82,
+              96
+            ],
+            [
+              0.99,
+              1,
+              270
+            ],
+            [
+              0.99,
+              0.97,
+              236
+            ],
+            [
+              0.99,
+              0.94,
+              196
+            ],
+            [
+              0.99,
+              0.9,
+              196
+            ],
+            [
+              0.99,
+              0.86,
+              141
+            ],
+            [
+              0.99,
+              0.82,
+              102
+            ],
+            [
+              0.98,
+              1,
+              197
+            ],
+            [
+              0.98,
+              0.97,
+              238
+            ],
+            [
+              0.98,
+              0.94,
+              194
+            ],
+            [
+              0.98,
+              0.9,
+              196
+            ],
+            [
+              0.98,
+              0.86,
+              154
+            ],
+            [
+              0.98,
+              0.82,
+              89
+            ],
+            [
+              0.97,
+              1,
+              144
+            ],
+            [
+              0.97,
+              0.97,
+              148
+            ],
+            [
+              0.97,
+              0.94,
+              161
+            ],
+            [
+              0.97,
+              0.9,
+              198
+            ],
+            [
+              0.97,
+              0.86,
+              137
+            ],
+            [
+              0.97,
+              0.82,
+              80
+            ],
+            [
+              0.96,
+              1,
+              104
+            ],
+            [
+              0.96,
+              0.97,
+              117
+            ],
+            [
+              0.96,
+              0.94,
+              129
+            ],
+            [
+              0.96,
+              0.9,
+              145
+            ],
+            [
+              0.96,
+              0.86,
+              59
+            ],
+            [
+              0.96,
+              0.82,
+              0
+            ]
+          ]
+        },
+        "ySpoke": {
+          "radialScale": 0.962254,
+          "depthScale": 1.324852,
+          "targetRadius": 0.287714,
+          "targetOutwardDepthRange": [
+            0.604856,
+            0.909572
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 326,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            0.96,
+            0.82
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              326
+            ],
+            [
+              1,
+              0.97,
+              260
+            ],
+            [
+              1,
+              0.94,
+              245
+            ],
+            [
+              1,
+              0.9,
+              227
+            ],
+            [
+              1,
+              0.86,
+              138
+            ],
+            [
+              1,
+              0.82,
+              96
+            ],
+            [
+              0.99,
+              1,
+              322
+            ],
+            [
+              0.99,
+              0.97,
+              273
+            ],
+            [
+              0.99,
+              0.94,
+              211
+            ],
+            [
+              0.99,
+              0.9,
+              205
+            ],
+            [
+              0.99,
+              0.86,
+              141
+            ],
+            [
+              0.99,
+              0.82,
+              102
+            ],
+            [
+              0.98,
+              1,
+              228
+            ],
+            [
+              0.98,
+              0.97,
+              263
+            ],
+            [
+              0.98,
+              0.94,
+              194
+            ],
+            [
+              0.98,
+              0.9,
+              196
+            ],
+            [
+              0.98,
+              0.86,
+              154
+            ],
+            [
+              0.98,
+              0.82,
+              89
+            ],
+            [
+              0.97,
+              1,
+              161
+            ],
+            [
+              0.97,
+              0.97,
+              157
+            ],
+            [
+              0.97,
+              0.94,
+              161
+            ],
+            [
+              0.97,
+              0.9,
+              198
+            ],
+            [
+              0.97,
+              0.86,
+              137
+            ],
+            [
+              0.97,
+              0.82,
+              80
+            ],
+            [
+              0.96,
+              1,
+              104
+            ],
+            [
+              0.96,
+              0.97,
+              117
+            ],
+            [
+              0.96,
+              0.94,
+              129
+            ],
+            [
+              0.96,
+              0.9,
+              145
+            ],
+            [
+              0.96,
+              0.86,
+              59
+            ],
+            [
+              0.96,
+              0.82,
+              0
+            ]
+          ]
+        },
+        "deepConcave": {
+          "radialScale": 0.962254,
+          "depthScale": 1.324852,
+          "targetRadius": 0.287714,
+          "targetOutwardDepthRange": [
+            0.604856,
+            0.909572
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 280,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            0.96,
+            0.82
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              280
+            ],
+            [
+              1,
+              0.97,
+              230
+            ],
+            [
+              1,
+              0.94,
+              236
+            ],
+            [
+              1,
+              0.9,
+              204
+            ],
+            [
+              1,
+              0.86,
+              129
+            ],
+            [
+              1,
+              0.82,
+              96
+            ],
+            [
+              0.99,
+              1,
+              274
+            ],
+            [
+              0.99,
+              0.97,
+              240
+            ],
+            [
+              0.99,
+              0.94,
+              211
+            ],
+            [
+              0.99,
+              0.9,
+              196
+            ],
+            [
+              0.99,
+              0.86,
+              141
+            ],
+            [
+              0.99,
+              0.82,
+              102
+            ],
+            [
+              0.98,
+              1,
+              197
+            ],
+            [
+              0.98,
+              0.97,
+              238
+            ],
+            [
+              0.98,
+              0.94,
+              194
+            ],
+            [
+              0.98,
+              0.9,
+              196
+            ],
+            [
+              0.98,
+              0.86,
+              154
+            ],
+            [
+              0.98,
+              0.82,
+              89
+            ],
+            [
+              0.97,
+              1,
+              144
+            ],
+            [
+              0.97,
+              0.97,
+              148
+            ],
+            [
+              0.97,
+              0.94,
+              161
+            ],
+            [
+              0.97,
+              0.9,
+              198
+            ],
+            [
+              0.97,
+              0.86,
+              137
+            ],
+            [
+              0.97,
+              0.82,
+              80
+            ],
+            [
+              0.96,
+              1,
+              104
+            ],
+            [
+              0.96,
+              0.97,
+              117
+            ],
+            [
+              0.96,
+              0.94,
+              129
+            ],
+            [
+              0.96,
+              0.9,
+              145
+            ],
+            [
+              0.96,
+              0.86,
+              59
+            ],
+            [
+              0.96,
+              0.82,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    "rearRight": {
+      "center": [
+        -1.38125,
+        -0.821194,
+        0.370361
+      ],
+      "outwardAxis": [
+        0,
+        -1,
+        0
+      ],
+      "parts": {
+        "tire": {
+          "vertexCount": 4824,
+          "boundsXYZ": [
+            [
+              -1.727319,
+              -1.035182
+            ],
+            [
+              -0.975969,
+              -0.66642
+            ],
+            [
+              0.022063,
+              0.718658
+            ]
+          ],
+          "radiusRange": [
+            0.2667,
+            0.348302
+          ],
+          "outwardDepthRange": [
+            0.66642,
+            0.975969
+          ],
+          "outwardFaceToCenter": 0.154774
+        },
+        "rimBadge": {
+          "vertexCount": 351,
+          "boundsXYZ": [
+            [
+              -1.472168,
+              -1.291762
+            ],
+            [
+              -0.960985,
+              -0.894694
+            ],
+            [
+              0.113513,
+              0.464749
+            ]
+          ],
+          "radiusRange": [
+            0.001875,
+            0.256851
+          ],
+          "outwardDepthRange": [
+            0.894694,
+            0.960985
+          ],
+          "outwardFaceToCenter": 0.13979
+        },
+        "auxiliaryRim": {
+          "vertexCount": 210,
+          "boundsXYZ": [
+            [
+              -1.662609,
+              -1.099907
+            ],
+            [
+              -0.976572,
+              -0.854204
+            ],
+            [
+              0.091823,
+              0.657034
+            ]
+          ],
+          "radiusRange": [
+            0.033607,
+            0.286677
+          ],
+          "outwardDepthRange": [
+            0.854204,
+            0.976572
+          ],
+          "outwardFaceToCenter": 0.155377
+        },
+        "mainRim": {
+          "vertexCount": 6390,
+          "boundsXYZ": [
+            [
+              -1.662609,
+              -1.099907
+            ],
+            [
+              -0.976572,
+              -0.671855
+            ],
+            [
+              0.082893,
+              0.657034
+            ]
+          ],
+          "radiusRange": [
+            0.001679,
+            0.287472
+          ],
+          "outwardDepthRange": [
+            0.671855,
+            0.976572
+          ],
+          "outwardFaceToCenter": 0.155377
+        },
+        "rimNoTint": {
+          "vertexCount": 480,
+          "boundsXYZ": [
+            [
+              -1.446435,
+              -1.316325
+            ],
+            [
+              -0.888297,
+              -0.876671
+            ],
+            [
+              0.315228,
+              0.440005
+            ]
+          ],
+          "radiusRange": [
+            0.046779,
+            0.069645
+          ],
+          "outwardDepthRange": [
+            0.876671,
+            0.888297
+          ],
+          "outwardFaceToCenter": 0.067102
+        },
+        "rimAccent": {
+          "vertexCount": 390,
+          "boundsXYZ": [
+            [
+              -1.647671,
+              -1.11495
+            ],
+            [
+              -0.953134,
+              -0.95146
+            ],
+            [
+              0.10822,
+              0.640786
+            ]
+          ],
+          "radiusRange": [
+            0.252286,
+            0.270734
+          ],
+          "outwardDepthRange": [
+            0.95146,
+            0.953134
+          ],
+          "outwardFaceToCenter": 0.131939
+        },
+        "rimBlurred": {
+          "vertexCount": 3720,
+          "boundsXYZ": [
+            [
+              -1.660568,
+              -1.101369
+            ],
+            [
+              -0.929718,
+              -0.647959
+            ],
+            [
+              0.095321,
+              0.65452
+            ]
+          ],
+          "radiusRange": [
+            0.023769,
+            0.28416
+          ],
+          "outwardDepthRange": [
+            0.647959,
+            0.929718
+          ],
+          "outwardFaceToCenter": 0.108523
+        },
+        "frontCaliper": {
+          "vertexCount": 276,
+          "boundsXYZ": [
+            [
+              -1.602055,
+              -1.480062
+            ],
+            [
+              -0.888293,
+              -0.725579
+            ],
+            [
+              0.288068,
+              0.550281
+            ]
+          ],
+          "radiusRange": [
+            0.130232,
+            0.221145
+          ],
+          "outwardDepthRange": [
+            0.725579,
+            0.888293
+          ],
+          "outwardFaceToCenter": 0.067099
+        },
+        "rearDisk": {
+          "vertexCount": 972,
+          "boundsXYZ": [
+            [
+              -1.577174,
+              -1.185175
+            ],
+            [
+              -0.862141,
+              -0.7896
+            ],
+            [
+              0.16999,
+              0.562765
+            ]
+          ],
+          "radiusRange": [
+            0.002492,
+            0.200374
+          ],
+          "outwardDepthRange": [
+            0.7896,
+            0.862141
+          ],
+          "outwardFaceToCenter": 0.040947
+        },
+        "frontDisk": null,
+        "bodyPaint": {
+          "vertexCount": 15918,
+          "boundsXYZ": [
+            [
+              -2.503539,
+              -0.000326
+            ],
+            [
+              -0.961271,
+              -0.002929
+            ],
+            [
+              0.204143,
+              1.45729
+            ]
+          ],
+          "radiusRange": [
+            0.3649,
+            1.717929
+          ],
+          "outwardDepthRange": [
+            0.002929,
+            0.961271
+          ],
+          "outwardFaceToCenter": 0.140076
+        },
+        "bodyBase": {
+          "vertexCount": 16573,
+          "boundsXYZ": [
+            [
+              -2.478625,
+              -0.291117
+            ],
+            [
+              -0.95515,
+              -0.000408
+            ],
+            [
+              0.211527,
+              1.386256
+            ]
+          ],
+          "radiusRange": [
+            0.195428,
+            1.38947
+          ],
+          "outwardDepthRange": [
+            0.000408,
+            0.95515
+          ],
+          "outwardFaceToCenter": 0.133955
+        }
+      },
+      "tireInnerMinusRimOuter": -0.020772,
+      "sourceCenterCapRegion": {
+        "vertexCount": 56,
+        "centerXYZ": [
+          -1.381413,
+          -0.896772,
+          0.369573
+        ],
+        "outwardDepthRange": [
+          0.894756,
+          0.898114
+        ]
+      },
+      "replacementProbes": {
+        "doubleSpoke": {
+          "radialScale": 0.961445,
+          "depthScale": 1.324856,
+          "targetRadius": 0.287472,
+          "targetOutwardDepthRange": [
+            0.671855,
+            0.976572
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 192,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            1,
+            0.82
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              192
+            ],
+            [
+              1,
+              0.97,
+              216
+            ],
+            [
+              1,
+              0.94,
+              148
+            ],
+            [
+              1,
+              0.9,
+              109
+            ],
+            [
+              1,
+              0.86,
+              61
+            ],
+            [
+              1,
+              0.82,
+              0
+            ]
+          ]
+        },
+        "ySpoke": {
+          "radialScale": 0.961445,
+          "depthScale": 1.324856,
+          "targetRadius": 0.287472,
+          "targetOutwardDepthRange": [
+            0.671855,
+            0.976572
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 212,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            1,
+            0.82
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              212
+            ],
+            [
+              1,
+              0.97,
+              234
+            ],
+            [
+              1,
+              0.94,
+              156
+            ],
+            [
+              1,
+              0.9,
+              109
+            ],
+            [
+              1,
+              0.86,
+              61
+            ],
+            [
+              1,
+              0.82,
+              0
+            ]
+          ]
+        },
+        "deepConcave": {
+          "radialScale": 0.961445,
+          "depthScale": 1.324856,
+          "targetRadius": 0.287472,
+          "targetOutwardDepthRange": [
+            0.671855,
+            0.976572
+          ],
+          "surfaceTriangleIntersections": {
+            "tire": 193,
+            "frontCaliper": 0,
+            "frontDisk": 0,
+            "rearDisk": 0,
+            "bodyPaint": 0,
+            "bodyBase": 0
+          },
+          "selectedFit": {
+            "radialFactor": 0.96,
+            "depthFactor": 0.82,
+            "surfaceTriangleIntersections": {
+              "tire": 0,
+              "frontCaliper": 0,
+              "frontDisk": 0,
+              "rearDisk": 0,
+              "bodyPaint": 0,
+              "bodyBase": 0
+            }
+          },
+          "firstZeroTireIntersectionFit": [
+            1,
+            0.82
+          ],
+          "tireFitScan": [
+            [
+              1,
+              1,
+              193
+            ],
+            [
+              1,
+              0.97,
+              216
+            ],
+            [
+              1,
+              0.94,
+              148
+            ],
+            [
+              1,
+              0.9,
+              109
+            ],
+            [
+              1,
+              0.86,
+              61
+            ],
+            [
+              1,
+              0.82,
+              0
+            ]
+          ]
+        }
+      }
+    }
+  }
+}
